@@ -21,13 +21,13 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' });
       NProgress.done();
     } else {
-      const hasGetUserInfo = store.getters.userInfo;
-      if (hasGetUserInfo.id) {
+      const hasGetUserInfo = store.getters.userInfo.id;
+      if (hasGetUserInfo) {
         next();
       } else {
         try {
-          const userID = await store.dispatch('user/getInfo');
-          await store.dispatch('permission/getUserMenu', userID);
+          await store.dispatch('user/getInfo');
+          await store.dispatch('permission/getUserMenu');
           const accessRoutes = await store.dispatch('permission/generateRoutes');
           router.addRoutes(accessRoutes);
           next({ ...to, replace: true });

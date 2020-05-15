@@ -1,51 +1,39 @@
-import { asyncRoutes, constantRoutes } from '@/router';
-import { rolesMenu } from '@/api/global';
-
+import { constantRoutes } from '@/router';
+import { mockMenu } from '@/api/global';
+import viewTem from '@/viewTem';
 /**
- * 生成动态路由表
- * @param routes 前端路由
- * @param rolesMenu 后端菜单
- * @param path
- * @returns {Array}
+ * 生成路由
+ * @param menus
  */
-function filterTreeRoutes(routes, rolesMenu) {
-  const res = [];
-  rolesMenu.forEach(route => {
-    const tmp = { ...route };
-    // if (tmp.path === 'timeOut') debugger;
-    const routeObj = vailPer(routes, tmp);
-    if (routeObj) {
-      if (tmp.children) {
-        routeObj['children'] = filterTreeRoutes(routeObj.children, tmp.children) || [];
+function filterTreeMenus(menus) {
+  return menus.filter(route => {
+    if (route.component) {
+      // Layout组件特殊处理
+      if (route.component === 'Layout') {
+        route.component = viewTem;
+      } else {
+        route.component = loadView(route.component);
       }
-      routeObj.meta.icon = tmp.icon || '';
-      routeObj.meta.title = tmp.title || routeObj.meta['title'] || '';
-      res.push(routeObj);
-      return true;
     }
+    if (route.children != null && route.children && route.children.length) {
+      route.children = filterTreeMenus(route.children);
+    }
+    return true;
   });
-  return res;
-}
-/**
- * 路由资源查找
- * @param {*} route 前端路由
- * @param {*} aynRoute 后端菜单
- */
-function vailPer(route, aynRoute) {
-  if (route && aynRoute.path && aynRoute.path !== '') {
-    const obj = route.find(item => item.path === aynRoute.path);
-    if (obj) {
-      return { ...obj };
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
 }
 
 /**
- * 生成新的路由
+ * 路由懒加载
+ * @param route
+ * @param aynRoute
+ * @returns {boolean|{[p: string]: *}}
+ */
+function loadView(routePath) {
+  return (resolve) => require([`@/views/${routePath}`], resolve);
+}
+
+/**
+ * 嵌套路由转换
  * @param router 生成的路由表
  * @param prefix
  * @returns {Array}
@@ -118,23 +106,30 @@ const actions = {
   // 拉取用户菜单
   getUserMenu({ commit, state }, id) {
     return new Promise((resolve, reject) => {
-      rolesMenu(id).then(response => {
-        const { data } = response;
-        commit('SET_MENUS', data.menu);
-        commit('SET_BTN', data.permissions);
-        resolve();
-      }).catch(error => {
-        reject(error);
-      });
+      const routerMenus = JSON.parse(localStorage.getItem('router'));
+      if (routerMenus) {
+        commit('SET_MENUS', routerMenus.menus);
+        commit('SET_BTN', routerMenus.btn);
+      } else {
+        mockMenu(id).then(response => {
+          const { data } = response;
+          commit('SET_MENUS', data.menus);
+          localStorage.setItem('router', JSON.stringify(data));
+          commit('SET_BTN', data.btn);
+        }).catch(error => {
+          reject(error);
+        });
+      }
+      resolve();
     });
   },
   // 生成路由表
-  generateRoutes({ commit, state }) {
+  generateRoutes({ commit, state }, menus = []) {
     return new Promise(resolve => {
       let accessedRoutes;
       const newRouter = [];
       if (state.menus.length) {
-        accessedRoutes = filterTreeRoutes(asyncRoutes, state.menus);
+        accessedRoutes = filterTreeMenus(state.menus);
       } else {
         accessedRoutes = [];
       }
@@ -145,6 +140,7 @@ const actions = {
         }
       }
       commit('SET_ROUTER', newRouter);
+      newRouter.push({ path: '*', redirect: '/404', hidden: true });
       resolve(newRouter);
     });
   }

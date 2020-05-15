@@ -12,12 +12,12 @@
       v-for="menu in menus"
       ref="menu"
       :key="menu.path"
-      :icon="menu.icon"
+      :icon="menu.meta && menu.meta.icon"
       :index="menu.path"
       @click="setMenus(menu)"
     >
-      <svg-icon :icon-class="menu.icon" />
-      <span slot="title">{{ menu.name }}</span>
+      <svg-icon :icon-class="menu.meta && menu.meta.icon" />
+      <span slot="title">{{ menu.meta && menu.meta.title }}</span>
     </el-menu-item>
   </el-menu>
 </template>
@@ -35,7 +35,14 @@ export default {
     activeMenu() {
       let activePath = '';
       const { path } = this.$route;
-      activePath = path.substring(path.indexOf('/'), path.indexOf('/', 2));
+      const lastLength = path.indexOf('/', 1);
+      activePath = path.substring(path.indexOf('/'), lastLength) || '/';
+      if (activePath === '/redirect') {
+        activePath = path.substring(lastLength, path.indexOf('/', lastLength + 1)) || '/';
+      }
+      if (activePath === '/') {
+        activePath = '/system';
+      }
       this.utilMenus(activePath);
       return activePath;
     },
@@ -53,6 +60,7 @@ export default {
       const obj = this.menus.find(function(item) {
         return item.path === path;
       });
+      console.log(obj)
       setTimeout(() => {
         this.setMenus(obj);
       }, 200);

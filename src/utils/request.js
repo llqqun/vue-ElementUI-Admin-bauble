@@ -18,7 +18,7 @@ service.interceptors.request.use(
   config => {
     loadingInstance = Loading.service({ text: '', spinner: 'loading', background: 'rgba(0, 0, 0, 0.2)' });
     if (store.getters.token) {
-      config.headers['Authorization'] = 'bearer ' + getToken();
+      config.headers['Authorization'] = getToken();
     }
     return config;
   },
@@ -62,7 +62,7 @@ service.interceptors.response.use(
     console.log('err' + error); // for debug
     loadingInstance.close();
     Message({
-      message: error.message,
+      message: error.message || '连接异常',
       type: 'error',
       duration: 5 * 1000
     });

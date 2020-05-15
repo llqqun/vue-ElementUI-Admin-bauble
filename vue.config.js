@@ -9,7 +9,7 @@ function resolve(dir) {
 
 const name = defaultSettings.title || '后台管理系统前端模板'; // page title
 
-const port = process.env.port || process.env.npm_config_port || 9528; // dev port
+const port = process.env.port || process.env.npm_config_port || 8188; // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -39,14 +39,14 @@ module.exports = {
         pathRewrite: {
           '^/dev-api/mock': ''
         }
-      },
-      [process.env.VUE_APP_BASE_API]: {
-        target: process.env.VUE_APP_PATH + `:${port}`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
       }
+      // [process.env.VUE_APP_BASE_API]: {
+      //   target: process.env.VUE_APP_PATH + `:${port}`,
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     ['^' + process.env.VUE_APP_BASE_API]: ''
+      //   }
+      // }
     },
     after: require('./mock/mock-server.js')
   },

@@ -17,14 +17,21 @@
   "dependencies": {
     "@riophae/vue-treeselect": "^0.4.0",
     "axios": "0.18.1",
+    "echarts": "^4.7.0",
     "element-ui": "^2.13.0",
     "js-cookie": "2.2.0",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
     "vue": "2.6.10",
+    "vue-i18n": "7.3.2",
+    "vxe-table": "^2.9.4",
     "vue-router": "3.0.6",
-    "vuex": "3.1.0"
+    "vue-count-to": "^1.0.13",
+    "vue-cron-generator": "^0.1.6",
+    "vxe-table-plugin-element": "^1.8.7",
+    "vuex": "3.1.0",
+    "xe-utils": "^2.4.5"
   },
   "devDependencies": {
     "@babel/core": "7.0.0",

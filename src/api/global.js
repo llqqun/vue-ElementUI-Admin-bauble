@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function mockMenu(data) {
   return request({
-    url: '/user/routes',
+    url: '/menus/routes',
     method: 'get',
     params: { data }
   });
@@ -10,7 +10,7 @@ export function mockMenu(data) {
 
 export function rolesMenu() {
   return request({
-    url: '/api/system/loginUser/menu/permissions',
+    url: '/api/system/menu/permissions',
     method: 'post'
   });
 }

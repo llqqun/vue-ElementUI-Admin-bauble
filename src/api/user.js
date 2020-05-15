@@ -10,7 +10,7 @@ export function login(data) {
 
 export function getInfo(id) {
   return request({
-    url: '/api/system/auth/admin/detail/' + id,
+    url: '/api/user/inform',
     method: 'get'
   });
 }
