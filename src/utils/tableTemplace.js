@@ -5,12 +5,12 @@ const tableTemp =
     { prop: 'mobile', label: '联系方式', widthMin: 140 }
   ],
   'menus': [
-    { prop: 'name', label: '菜单名称', widthMin: 140, center: 'left' },
-    { prop: 'path', label: '菜单路径', widthMin: 140, center: 'center' },
+    { prop: 'title', label: '菜单名称', widthMin: 140, center: 'left' },
+    { prop: 'path', label: '菜单路径', widthMin: 140, center: 'left' },
     { prop: 'alias', label: '菜单权限', widthMin: 140, center: 'center' },
     { prop: 'icon', label: '菜单图标', widthMin: 140, center: 'center' },
-    { prop: 'sort', label: '排序', widthMin: 140, center: 'center' },
-    { prop: 'type', label: '类型', widthMin: 140, center: 'center' }
+    { prop: 'type', label: '类型', widthMin: 60, tempalateOff: 'type', center: 'center' },
+    { prop: 'sort', label: '排序', widthMin: 60, center: 'center' }
 
   ],
   'loans': [

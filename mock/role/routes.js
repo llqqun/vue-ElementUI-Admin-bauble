@@ -6,7 +6,9 @@ export const asyncRoutes = [
     name: 'System',
     component: 'Layout',
     redirect: 'noRedirect',
-    hidden: false,
+    hidden: 0,
+    isFrame: 0,
+    status: 1,
     meta:
       {
         title: '系统管理',
@@ -18,7 +20,11 @@ export const asyncRoutes = [
         path: 'admin',
         name: 'Admin',
         component: 'system/admin',
-        hidden: false,
+        sort: 0,
+        type: 1,
+        hidden: 0,
+        isFrame: 0,
+        status: 1,
         meta:
           {
             title: '用户管理',
@@ -30,11 +36,15 @@ export const asyncRoutes = [
         path: 'resource',
         name: 'Resource',
         component: 'system/resource',
+        sort: 0,
+        type: 1,
+        status: 1,
         meta:
           {
             title: '菜单管理',
             icon: 'mentus'
           },
+        isFrame: 0,
         hidden: false
       },
       {
@@ -42,11 +52,15 @@ export const asyncRoutes = [
         path: 'roles',
         name: 'Roles',
         component: 'system/resource',
+        sort: 0,
+        type: 1,
+        status: 1,
         meta:
           {
             title: '角色管理',
             icon: 'mentus'
           },
+        isFrame: 0,
         hidden: false
       }
     ]
@@ -56,7 +70,11 @@ export const asyncRoutes = [
     path: '/professionalWork',
     component: 'Layout',
     name: 'ProfessionalWork',
-    hidden: false,
+    sort: 0,
+    type: 0,
+    isFrame: 0,
+    hidden: 0,
+    status: 1,
     meta:
       {
         title: '业务功能',
@@ -67,7 +85,11 @@ export const asyncRoutes = [
         id: 21,
         path: 'table',
         name: 'Table',
-        hidden: false,
+        sort: 0,
+        type: 1,
+        isFrame: 0,
+        status: 1,
+        hidden: 0,
         meta:
           {
             title: '表格',
@@ -78,6 +100,10 @@ export const asyncRoutes = [
             id: 211,
             path: 'table1',
             name: 'Table1',
+            sort: 0,
+            type: 1,
+            status: 1,
+            isFrame: 0,
             meta: {
               title: '综合表格',
               icon: ''
@@ -88,6 +114,10 @@ export const asyncRoutes = [
             path: 'table2',
             name: 'Table2',
             title: '复杂表格',
+            sort: 0,
+            type: 1,
+            status: 1,
+            isFrame: 0,
             meta: {
               title: '复杂表格',
               icon: ''
@@ -101,11 +131,155 @@ export const asyncRoutes = [
     id: 3,
     path: '/experiment',
     component: 'Layout',
+    sort: 0,
+    type: 0,
+    status: 1,
+    isFrame: 0,
     meta:
       {
         title: '实验室',
         icon: 'example'
       },
+    children: []
+  }
+];
+
+export const menus = [
+  {
+    id: 1,
+    path: '/system',
+    name: 'System',
+    component: 'Layout',
+    redirect: 'noRedirect',
+    sort: 0,
+    type: 0,
+    hidden: 0,
+    isFrame: 0,
+    status: 1,
+    title: '系统管理',
+    icon: 'example',
+    children: [
+      {
+        id: 11,
+        pid: 1,
+        path: 'admin',
+        name: 'Admin',
+        component: 'system/admin',
+        sort: 0,
+        type: 1,
+        hidden: 0,
+        isFrame: 0,
+        status: 1,
+        children: [{
+          id: 11111,
+          pid: 11,
+          title: '编辑',
+          type: 2,
+          alias: 'sys:admin:edit'
+        }, {
+          id: 11112,
+          title: '新增',
+          type: 2,
+          alias: 'sys:admin:add',
+          pid: 11
+        }],
+        title: '用户管理',
+        icon: 'example'
+      },
+      {
+        id: 12,
+        path: 'resource',
+        name: 'Resource',
+        component: 'system/resource',
+        sort: 0,
+        type: 1,
+        status: 1,
+        title: '菜单管理',
+        icon: 'mentus',
+        isFrame: 0,
+        pid: 1,
+        hidden: false
+      },
+      {
+        id: 13,
+        path: 'roles',
+        name: 'Roles',
+        component: 'system/resource',
+        sort: 0,
+        type: 1,
+        status: 1,
+        pid: 1,
+        title: '角色管理',
+        icon: 'mentus',
+        isFrame: 0,
+        hidden: false
+      }
+    ]
+  },
+  {
+    id: 2,
+    path: '/professionalWork',
+    component: 'Layout',
+    name: 'ProfessionalWork',
+    sort: 0,
+    type: 0,
+    isFrame: 0,
+    hidden: 0,
+    status: 1,
+    title: '业务功能',
+    icon: 'example',
+    children: [
+      {
+        id: 21,
+        pid: 2,
+        path: 'table',
+        name: 'Table',
+        sort: 0,
+        type: 1,
+        isFrame: 0,
+        status: 1,
+        hidden: 0,
+        title: '表格',
+        icon: 'example',
+        children: [
+          {
+            id: 211,
+            path: 'table1',
+            name: 'Table1',
+            sort: 0,
+            type: 1,
+            pid: 21,
+            status: 1,
+            isFrame: 0,
+            title: '综合表格',
+            icon: ''
+          },
+          {
+            id: 212,
+            pid: 21,
+            path: 'table2',
+            name: 'Table2',
+            sort: 0,
+            type: 1,
+            status: 1,
+            isFrame: 0,
+            title: '复杂表格',
+            icon: ''
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    path: '/experiment',
+    component: 'Layout',
+    sort: 0,
+    type: 0,
+    status: 1,
+    isFrame: 0,
+    title: '实验室',
+    icon: 'example',
     children: []
   }
 ];

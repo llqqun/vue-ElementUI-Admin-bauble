@@ -1,6 +1,6 @@
 import Mock from 'mockjs';
 import { deepClone } from '../../src/utils';
-import { asyncRoutes } from './routes.js';
+import { asyncRoutes, menus } from './routes.js';
 
 const routes = deepClone([...asyncRoutes]);
 const roles = [
@@ -37,6 +37,16 @@ const btn = ['ent:system:edit', 'ent:system:del', 'ent:system:add', 'ent:system:
 
 export default [
   // mock get all routes form server
+  {
+    url: '/menus',
+    type: 'get',
+    response: _ => {
+      return {
+        code: 200,
+        data: { list: menus }
+      };
+    }
+  },
   {
     url: '/menus/routes',
     type: 'get',

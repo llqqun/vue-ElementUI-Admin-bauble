@@ -60,7 +60,6 @@ export default {
       const obj = this.menus.find(function(item) {
         return item.path === path;
       });
-      console.log(obj)
       setTimeout(() => {
         this.setMenus(obj);
       }, 200);

@@ -26,6 +26,7 @@ function formatch(str, incise = '', seek, division = '') {
     return false;
   }
 }
+
 export function get(url, params) {
   return request({
     url: url,

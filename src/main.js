@@ -14,11 +14,23 @@ import router from './router';
 import * as filters from './filters';
 import mixins from './mixins';
 import '@/icons'; // icon
+import { mockXHR } from '../mock';
 import '@/permission'; // permission control
 import rolesPermission from '@/utils/permission';
 import userSelect from '@/components/userSelect';
+// vxeTable
+import XEUtils from 'xe-utils';
+import VXETable from 'vxe-table';
+import 'vxe-table/lib/index.css';
+import VXETablePluginElement from 'vxe-table-plugin-element'; // 兼容饿了么组件
+import vxe_table_option from '@/utils/vxe-table'; // 全局vxeTable配置
+VXETable.setup(vxe_table_option);
+VXETable.use(VXETablePluginElement);
+Vue.use(VXETable);
+Vue.prototype.$XModal = VXETable.modal;
+Vue.prototype.VXETable = VXETable;
+Vue.prototype.XEUtils = XEUtils;
 Vue.prototype.RP = rolesPermission;
-import { mockXHR } from '../mock';
 if (process.env.NODE_ENV === 'production') {
   mockXHR();
 }
