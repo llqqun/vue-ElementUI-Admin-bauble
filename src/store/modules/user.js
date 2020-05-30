@@ -61,6 +61,7 @@ const actions = {
         resetRouter();
         commit('RESET_STATE');
         store.dispatch('tagsView/delAllViews', null, { root: true });
+        store.dispatch('permission/resetPer');
         resolve();
       }).catch(error => {
         reject(error);

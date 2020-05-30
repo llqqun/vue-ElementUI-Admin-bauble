@@ -1,5 +1,5 @@
 import { constantRoutes } from '@/router';
-import { mockMenu } from '@/api/global';
+import { mockMenu, mockRouter } from '@/api/global';
 import viewTem from '@/viewTem';
 /**
  * 生成路由
@@ -74,7 +74,23 @@ function delteFakeParent(router, prefix) {
 
   return newRouter;
 }
-
+/* 菜单生成路由 */
+function transitionRouter(menus) {
+  let accessedRoutes;
+  const newRouter = [];
+  if (menus.length) {
+    accessedRoutes = filterTreeMenus(menus);
+  } else {
+    accessedRoutes = [];
+  }
+  for (let i = 0; i < accessedRoutes.length; i++) {
+    const item = delteFakeParent(accessedRoutes[i]);
+    if (item) {
+      newRouter.push(item);
+    }
+  }
+  return newRouter;
+}
 const state = {
   router: [],
   btnRoles: [],
@@ -99,20 +115,25 @@ const mutations = {
     state.menus = [];
     state.leftMenus = [];
     state.router = [];
+    state.btnRoles = [];
+    localStorage.clear();
   }
 };
 
 const actions = {
   // 拉取用户菜单
   getUserMenu({ commit, state }, id) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
+      let newRouter = [];
       const routerMenus = JSON.parse(localStorage.getItem('router'));
       if (routerMenus) {
+        newRouter = routerMenus.menus;
         commit('SET_MENUS', routerMenus.menus);
         commit('SET_BTN', routerMenus.btn);
       } else {
-        mockMenu(id).then(response => {
+        await mockRouter(id).then(response => {
           const { data } = response;
+          newRouter = data.menus;
           commit('SET_MENUS', data.menus);
           localStorage.setItem('router', JSON.stringify(data));
           commit('SET_BTN', data.btn);
@@ -120,29 +141,14 @@ const actions = {
           reject(error);
         });
       }
-      resolve();
+      const rou = transitionRouter(newRouter);
+      commit('SET_ROUTER', rou);
+      rou.push({ path: '*', redirect: '/404', hidden: true });
+      resolve(rou);
     });
   },
-  // 生成路由表
-  generateRoutes({ commit, state }, menus = []) {
-    return new Promise(resolve => {
-      let accessedRoutes;
-      const newRouter = [];
-      if (state.menus.length) {
-        accessedRoutes = filterTreeMenus(state.menus);
-      } else {
-        accessedRoutes = [];
-      }
-      for (let i = 0; i < accessedRoutes.length; i++) {
-        const item = delteFakeParent(accessedRoutes[i]);
-        if (item) {
-          newRouter.push(item);
-        }
-      }
-      commit('SET_ROUTER', newRouter);
-      newRouter.push({ path: '*', redirect: '/404', hidden: true });
-      resolve(newRouter);
-    });
+  resetPer({ commit, state }) {
+    commit('REMOVE_MENUS');
   }
 };
 

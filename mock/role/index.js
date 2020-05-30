@@ -43,12 +43,12 @@ export default [
     response: _ => {
       return {
         code: 200,
-        data: { list: menus }
+        data: { menus: menus }
       };
     }
   },
   {
-    url: '/menus/routes',
+    url: '/routes',
     type: 'get',
     response: _ => {
       return {

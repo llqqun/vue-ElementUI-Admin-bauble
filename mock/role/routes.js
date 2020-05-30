@@ -1,14 +1,11 @@
 
 export const asyncRoutes = [
   {
-    id: 1,
     path: '/system',
     name: 'System',
     component: 'Layout',
     redirect: 'noRedirect',
     hidden: 0,
-    isFrame: 0,
-    status: 1,
     meta:
       {
         title: '系统管理',
@@ -16,15 +13,10 @@ export const asyncRoutes = [
       },
     children: [
       {
-        id: 11,
         path: 'admin',
         name: 'Admin',
         component: 'system/admin',
-        sort: 0,
-        type: 1,
         hidden: 0,
-        isFrame: 0,
-        status: 1,
         meta:
           {
             title: '用户管理',
@@ -32,49 +24,44 @@ export const asyncRoutes = [
           }
       },
       {
-        id: 12,
         path: 'resource',
         name: 'Resource',
         component: 'system/resource',
-        sort: 0,
-        type: 1,
-        status: 1,
         meta:
           {
             title: '菜单管理',
             icon: 'mentus'
           },
-        isFrame: 0,
         hidden: false
       },
       {
-        id: 13,
         path: 'roles',
         name: 'Roles',
         component: 'system/resource',
-        sort: 0,
-        type: 1,
-        status: 1,
         meta:
           {
             title: '角色管理',
             icon: 'mentus'
           },
-        isFrame: 0,
+        hidden: false
+      },
+      {
+        path: 'https://www.baidu.com',
+        component: 'Layout',
+        meta:
+          {
+            title: '百度搜索',
+            icon: 'mentus'
+          },
         hidden: false
       }
     ]
   },
   {
-    id: 2,
     path: '/professionalWork',
     component: 'Layout',
     name: 'ProfessionalWork',
-    sort: 0,
-    type: 0,
-    isFrame: 0,
     hidden: 0,
-    status: 1,
     meta:
       {
         title: '业务功能',
@@ -82,14 +69,8 @@ export const asyncRoutes = [
       },
     children: [
       {
-        id: 21,
         path: 'table',
         name: 'Table',
-        sort: 0,
-        type: 1,
-        isFrame: 0,
-        status: 1,
-        hidden: 0,
         meta:
           {
             title: '表格',
@@ -100,24 +81,15 @@ export const asyncRoutes = [
             id: 211,
             path: 'table1',
             name: 'Table1',
-            sort: 0,
-            type: 1,
-            status: 1,
-            isFrame: 0,
             meta: {
               title: '综合表格',
               icon: ''
             }
           },
           {
-            id: 212,
             path: 'table2',
             name: 'Table2',
             title: '复杂表格',
-            sort: 0,
-            type: 1,
-            status: 1,
-            isFrame: 0,
             meta: {
               title: '复杂表格',
               icon: ''
@@ -128,13 +100,8 @@ export const asyncRoutes = [
     ]
   },
   {
-    id: 3,
     path: '/experiment',
     component: 'Layout',
-    sort: 0,
-    type: 0,
-    status: 1,
-    isFrame: 0,
     meta:
       {
         title: '实验室',
