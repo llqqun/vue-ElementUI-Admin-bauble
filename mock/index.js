@@ -3,7 +3,7 @@ import { param2Obj } from '../src/utils';
 
 import user from './user';
 import table from './table';
-import role from './role';
+import role from './system';
 
 const mocks = [
   ...user,

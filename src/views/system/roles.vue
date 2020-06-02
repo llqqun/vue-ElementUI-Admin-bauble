@@ -2,14 +2,13 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <el-col :span="16">
+      <el-col :span="rowWidth">
         <el-card
           class="box-card"
         >
           <div slot="header" class="clearfix">
             <span>角色列表</span>
             <el-button
-              v-if="RP(['sys:roles:add'])"
               size="mini"
               type="primary"
               style="float: right;"
@@ -17,29 +16,22 @@
             >添加
             </el-button>
           </div>
-          <el-scrollbar class="custom-scrollbar" wrap-class="scrollbar-wrapper">
-            <el-table ref="tableData" :data="tableData" border style="width: 100%">
-              <el-table-column align="center" prop="name" label="名称" :show-overflow-tooltip="true" />
-              <el-table-column align="center" prop="remark" label="简介" width="180" :show-overflow-tooltip="true" />
-              <el-table-column align="center" label="角色级别" width="80">
-                <template slot-scope="{row}">
-                  <span>{{ row.level | levelFilter }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="状态">
-                <template slot-scope="{row}">
-                  <el-tag :type="row.enable | statusFilter">{{ row.enable | statusFilter }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" label="操作" width="240">
-                <template slot-scope="scope">
-                  <el-button type="success" size="mini" @click="handleResource(scope.row)">权限</el-button>
-                  <el-button v-if="RP(['sys:roles:edit'])" type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                  <el-button v-if="RP(['sys:roles:del'])" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-scrollbar>
+          <el-table ref="tableData" :data="tableData" border style="width: 100%" :height="tableHeight -105">
+            <el-table-column align="center" prop="name" label="名称" :show-overflow-tooltip="true" />
+            <el-table-column align="center" prop="remark" label="简介" width="180" :show-overflow-tooltip="true" />
+            <el-table-column align="center" label="状态">
+              <template slot-scope="{row}">
+                <el-tag type="success">{{ row.status | statusFilter }}</el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作" width="240">
+              <template slot-scope="scope">
+                <el-button type="success" size="mini" @click="handleResource(scope.row)">权限</el-button>
+                <el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+                <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-card>
       </el-col>
       <transition name="lqTran">
@@ -47,8 +39,8 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>权限设置</span>
+              <div class="close-right" @click="closeRightRole"><i class="el-icon-error "></i></div>
               <el-button
-                v-if="RP(['sys:roles:authority'])"
                 type="primary"
                 size="mini"
                 style="float: right;"
@@ -56,10 +48,10 @@
               >提交
               </el-button>
             </div>
-            <el-scrollbar wrap-class="scrollbar-wrapper" class="custom-scrollbar">
+            <el-scrollbar wrap-class="scrollbar-wrapper" :style="{ 'height': (tableHeight-105) + 'px'}">
               <el-tree
                 ref="tree"
-                :check-strictly="true"
+                :check-strictly="false"
                 :data="resourceTree"
                 :props="defaultProps"
                 show-checkbox
@@ -81,9 +73,6 @@
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="saveForm.name" placeholder="角色名称" />
         </el-form-item>
-        <el-form-item label="角色级别">
-          <user-Select v-model="saveForm.level" value-id="value" :options="dictSelect" />
-        </el-form-item>
         <el-form-item label="角色介绍">
           <el-input
             v-model="saveForm.remark"
@@ -94,7 +83,7 @@
         </el-form-item>
         <el-form-item label="角色状态">
           <el-switch
-            v-model="saveForm.enable"
+            v-model="saveForm.status"
             :active-value="1"
             :inactive-value="0"
             active-text="启用"
@@ -114,13 +103,11 @@
 import { get, post, getDictionary } from '@/api/common';
 import { delMessage } from '@/utils/common';
 import { deepClone } from '@/utils';
-import rolesPermission from '@/utils/permission';
-var appVue;
 const defaultData = {
   id: null,
   remark: '',
   name: '',
-  enable: 1,
+  status: 1,
   level: null
 };
 
@@ -130,53 +117,37 @@ export default {
     statusFilter(status) {
       const statusMap = ['停用', '启用'];
       return statusMap[status];
-    },
-    levelFilter(status) {
-      if (appVue.dictSelect.constructor === Array && appVue.dictSelect.length > 0) {
-        for (let i = 0, length = appVue.dictSelect.length;i < length;i++) {
-          if (status === appVue.dictSelect[i].value) {
-            return appVue.dictSelect[i].label;
-          }
-        }
-      }
     }
   },
   data: () => ({
-    saveType: 'add',
+    rowWidth: 24,
     dialogType: 'add',
     dialogVisible: false,
     show_resource: false,
     defaultRoles: { roleId: null, resources: [] },
     tableData: [],
-    dictSelect: [],
     resourceTree: [],
-    defaultProps: { label: 'name' },
-    rolesForm: [],
+    defaultProps: { label: 'title' },
     saveForm: Object.assign({}, defaultData),
-
     rules: {
       name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
     }
   }),
   created() {
-    appVue = this;
   },
-  async mounted() {
-    await this.getDicSelect();
-    await this.getResourceTree();
-    this.getRolesTable();
+  mounted() {
+    this.init();
   },
   methods: {
-    rolesPermission,
-    async getDicSelect() {
-      await getDictionary('LEVEL').then(res => {
-        this.dictSelect = res.data;
-      });
+    async init() {
+      await this.getResourceTree();
+      this.getRolesTable();
     },
     confirmRole() {
       const _this = this;
       this.$refs['saveForm'].validate(valid => {
         if (valid) {
+          return this.$message.success('成功');
           post('/api/system/auth/role/save', this.saveForm).then(res => {
             _this.dialogVisible = false;
             _this.getRolesTable();
@@ -187,6 +158,8 @@ export default {
     subRoules() {
       this.defaultRoles.resources = this.$refs.tree.getCheckedKeys() || [];
       if (this.defaultRoles.resources.length > 0) {
+        this.$message.success('提交成功');
+        return '';
         post('/api/system/auth/role/addRoleResources', this.defaultRoles).then(
           res => {
             this.$nextTick(() => {
@@ -197,23 +170,15 @@ export default {
         );
       }
     },
+    closeRightRole() {
+      this.show_resource = false;
+      setTimeout(() => {
+        this.rowWidth = 24;
+      }, 310);
+    },
     handleResource(row) {
       this.show_resource = true;
-      this.loading = true;
-      get('/api/system/auth/role/resourcesByRoleId/' + row.id)
-        .then(res => {
-          this.defaultRoles.roleId = row.id;
-          this.$nextTick(() => {
-            res.loading.close();
-          });
-          this.$refs.tree.setCheckedKeys(res.data);
-        })
-        .catch(() => {
-          this.$message({
-            type: 'error',
-            message: '没有找到权限信息'
-          });
-        });
+      this.rowWidth = 16;
     },
     addRoles() {
       this.saveForm = Object.assign({}, defaultData);
@@ -231,16 +196,13 @@ export default {
       this.dialogVisible = true;
     },
     async getResourceTree() {
-      await get('/api/system/auth/resource/tree').then(res => {
+      await get('/resource/tree').then(res => {
         this.resourceTree = res.data;
       });
     },
     getRolesTable() {
-      get('/api/system/auth/role/list').then(res => {
-        this.tableData = res.data;
-        this.$nextTick(() => {
-          res.loading.close();
-        });
+      get('/roles').then(res => {
+        this.tableData = res.data.list;
       }).catch(() => {
       });
     },
@@ -251,4 +213,15 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+  .app-container {
+    background: none;
+  }
+  .close-right {
+    color: #ff4949;
+    position: absolute;
+    right: 1px;
+    top: -9px;
+    font-size: 25px;
+    cursor: pointer;
+  }
 </style>

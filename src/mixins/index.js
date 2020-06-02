@@ -1,9 +1,13 @@
 import templace from '@/utils/tableTemplace';
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
       tableTem: templace
     };
+  },
+  computed: {
+    ...mapGetters(['tableHeight'])
   },
   methods: {
     /**

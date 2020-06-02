@@ -2,7 +2,7 @@ import { get } from '@/api/common';
 
 const getDefaultState = () => {
   return {
-    heightTable: document.body.offsetHeight - 230,
+    heightTable: document.body.offsetHeight - 125,
     company: [],
     fileUploadPath: process.env.VUE_APP_PATH + ':' + process.env.VUE_APP_API_PORT + '/api/file/upload',
     imgUploadPath: process.env.VUE_APP_PATH + ':' + process.env.VUE_APP_API_PORT + '/api/picture/upload',

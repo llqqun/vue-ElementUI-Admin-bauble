@@ -5,7 +5,6 @@ export const asyncRoutes = [
     name: 'System',
     component: 'Layout',
     redirect: 'noRedirect',
-    hidden: 0,
     meta:
       {
         title: '系统管理',
@@ -37,7 +36,7 @@ export const asyncRoutes = [
       {
         path: 'roles',
         name: 'Roles',
-        component: 'system/resource',
+        component: 'system/roles',
         meta:
           {
             title: '角色管理',
@@ -107,7 +106,18 @@ export const asyncRoutes = [
         title: '实验室',
         icon: 'example'
       },
-    children: []
+    children: [
+      {
+        path: 'test',
+        name: 'test',
+        component: 'experiment/test',
+        meta:
+          {
+            title: '测试',
+            icon: 'example'
+          }
+      }
+    ]
   }
 ];
 

@@ -235,7 +235,7 @@ export default {
     },
     async getResourceTree() {
       await get('/menus').then(res => {
-        this.resourceTree = res.data.list;
+        this.resourceTree = res.data.menus;
         this.$nextTick(() => {
           this.$refs.xTree.setAllTreeExpansion(true);
         });
