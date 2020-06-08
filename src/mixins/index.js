@@ -7,7 +7,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['tableHeight'])
   },
   methods: {
     /**

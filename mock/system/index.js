@@ -24,7 +24,7 @@ export default [
     response: _ => {
       return {
         code: 200,
-        data: { menus: asyncRoutes }
+        data: { menus: menus }
       };
     }
   },

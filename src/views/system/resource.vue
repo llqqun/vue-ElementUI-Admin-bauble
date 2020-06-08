@@ -15,7 +15,7 @@
       border="full"
       tree-config
       highlight-hover-row
-      :max-height="tableHeight + 60"
+      :max-height="tableHeight - 43"
       :data="tableTree"
     >
       <template v-for="(item,index) in tableColumns">

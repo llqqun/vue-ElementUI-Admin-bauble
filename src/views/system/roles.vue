@@ -3,9 +3,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="rowWidth">
-        <el-card
-          class="box-card"
-        >
+        <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>角色列表</span>
             <el-button
@@ -103,6 +101,7 @@
 import { get, post, getDictionary } from '@/api/common';
 import { delMessage } from '@/utils/common';
 import { deepClone } from '@/utils';
+import { mapGetters } from 'vuex'
 const defaultData = {
   id: null,
   remark: '',
@@ -137,6 +136,9 @@ export default {
   },
   mounted() {
     this.init();
+  },
+  computed: {
+    ...mapGetters(['tableHeight'])
   },
   methods: {
     async init() {

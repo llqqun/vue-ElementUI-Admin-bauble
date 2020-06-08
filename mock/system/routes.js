@@ -12,17 +12,6 @@ export const asyncRoutes = [
       },
     children: [
       {
-        path: 'admin',
-        name: 'Admin',
-        component: 'system/admin',
-        hidden: 0,
-        meta:
-          {
-            title: '用户管理',
-            icon: 'example'
-          }
-      },
-      {
         path: 'resource',
         name: 'Resource',
         component: 'system/resource',
@@ -34,6 +23,17 @@ export const asyncRoutes = [
         hidden: false
       },
       {
+        path: 'admin',
+        name: 'Admin',
+        component: 'system/admin',
+        hidden: 0,
+        meta:
+          {
+            title: '用户管理',
+            icon: 'example'
+          }
+      },
+      {
         path: 'roles',
         name: 'Roles',
         component: 'system/roles',
@@ -43,6 +43,47 @@ export const asyncRoutes = [
             icon: 'mentus'
           },
         hidden: false
+      },
+      {
+        path: 'monitoringSYS',
+        noCompoent: true,
+        meta: {
+          title: '系统监控',
+          icon: 'mentus'
+        },
+        children: [{
+          path: 'loginRecord',
+          name: 'LoginRecord',
+          component: 'system/monitoring/loginRecord',
+          meta: {
+            title: '系统登入记录'
+          }
+        },
+        {
+          path: 'sysLog',
+          name: 'SysLog',
+          component: 'system/monitoring/sysLog',
+          meta: {
+            title: '系统操作日志'
+          }
+        },
+        {
+          path: 'serviceState',
+          name: 'ServiceState',
+          component: 'system/monitoring/serviceState',
+          meta: {
+            title: '服务器状况'
+          }
+        },
+        {
+          path: 'online',
+          name: 'Online',
+          component: 'system/monitoring/online',
+          meta: {
+            title: '在线用户'
+          }
+        }
+        ]
       },
       {
         path: 'https://www.baidu.com',
