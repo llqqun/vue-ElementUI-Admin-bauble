@@ -58,3 +58,10 @@
   height: 100vh;
   z-index: 999999999999;
 }
+
+// 重新定义弹窗表头样式
+.el-dialog__header {
+  border-bottom: 1px #eeeeee solid;
+  background-color: #f8f8f8;
+  font-weight: 700;
+}

@@ -41,15 +41,20 @@ export default [
     url: '/api/user/inform',
     type: 'get',
     response: config => {
-      const { params } = config.query;
-      // mock error
-      if (params) {
+      const { token } = config.query;
+      if (!token) {
         return {
           code: 201,
-          message: '没有用户信息.'
+          message: '没有用户信息'
         };
       }
-
+      if (token.indexOf('demo') !== -1) {
+        return {
+          code: 200,
+          data: data.users[1]
+        };
+      }
+      data.users[0]['token'] = token;
       return {
         code: 200,
         data: data.users[0]

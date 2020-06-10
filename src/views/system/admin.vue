@@ -23,8 +23,8 @@
       </el-table-column>
       <el-table-column align="center" label="操作" min-width="240" fixed="right">
         <template slot-scope="scope">
-          <el-button v-if="RP(['sys:admin:edit'])" type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button v-if="RP(['sys:admin:del'])" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -147,7 +147,7 @@ export default {
   },
 
   async mounted() {
-    // this.getTableData();
+    this.getTableData();
   },
 
   methods: {
@@ -228,12 +228,9 @@ export default {
     },
     getTableData() {
       this.loading = true;
-      get('/api/system/auth/admin/page', this.filterForm).then(res => {
+      get('/admin/list', this.filterForm).then(res => {
         this.tableData = res.data.records;
         this.filterForm.total = res.data.total;
-        this.$nextTick(() => {
-          res.loading.close();
-        });
       });
     },
     selectOrg(node) {

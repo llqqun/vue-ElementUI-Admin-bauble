@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      title: '不良贷款管理系统',
+      title: '后台管理系统',
       logo: '~@/assets/yg.png'
     };
   },

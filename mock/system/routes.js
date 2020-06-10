@@ -1,5 +1,5 @@
 
-export const asyncRoutes = [
+export const adminRoutes = [
   {
     path: '/system',
     name: 'System',
@@ -40,6 +40,17 @@ export const asyncRoutes = [
         meta:
           {
             title: '角色管理',
+            icon: 'mentus'
+          },
+        hidden: false
+      },
+      {
+        path: 'organization',
+        name: 'Organization',
+        component: 'system/organization',
+        meta:
+          {
+            title: '组织机构',
             icon: 'mentus'
           },
         hidden: false
@@ -97,6 +108,91 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/professionalWork',
+    component: 'Layout',
+    hidden: 0,
+    meta:
+      {
+        title: '业务功能',
+        icon: 'example'
+      },
+    children: [
+      {
+        path: 'table',
+        noCompoent: true,
+        meta:
+          {
+            title: '表格',
+            icon: 'example'
+          },
+        children: [
+          {
+            path: 'table1',
+            name: 'Table1',
+            component: 'professionalWork/table/table1',
+            meta: {
+              title: '综合表格',
+              icon: ''
+            }
+          },
+          {
+            path: 'table2',
+            name: 'Table2',
+            component: 'professionalWork/table/table2',
+            title: '复杂表格',
+            meta: {
+              title: '复杂表格',
+              icon: ''
+            }
+          }
+        ]
+      },
+      {
+        path: 'components',
+        noCompoent: true,
+        meta:
+          {
+            title: '组件',
+            icon: 'example'
+          },
+        children: [
+          {
+            path: 'vueCropper',
+            name: 'VueCropper',
+            component: 'professionalWork/components/vueCropper',
+            meta: {
+              title: '图片裁剪',
+              icon: ''
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/experiment',
+    component: 'Layout',
+    meta:
+      {
+        title: '实验室',
+        icon: 'example'
+      },
+    children: [
+      {
+        path: 'test',
+        name: 'test',
+        component: 'experiment/test',
+        meta:
+          {
+            title: '测试',
+            icon: 'example'
+          }
+      }
+    ]
+  }
+];
+export const demoRoutes = [
   {
     path: '/professionalWork',
     component: 'Layout',

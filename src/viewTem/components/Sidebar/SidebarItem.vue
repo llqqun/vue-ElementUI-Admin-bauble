@@ -72,7 +72,7 @@ export default {
       // 只有一个子节点时则直接显示子节点,路径因为设置的是相等路径,则添加父路径
       if (showingChildren.length === 1) {
         // debugger
-        this.onlyOneChild.path = this.basePath + '/' + this.onlyOneChild.path;
+        this.onlyOneChild.path = this.basePath + '/' + parent.path + '/' + this.onlyOneChild.path;
         return true;
       }
 

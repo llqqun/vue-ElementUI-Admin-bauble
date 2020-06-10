@@ -1,6 +1,7 @@
-import { constantRoutes } from '@/router';
+import { constantRoutes, asyncRoutes } from '@/router';
 import { mockMenu, mockRouter } from '@/api/global';
 import viewTem from '@/viewTem';
+import store from '@/store';
 /**
  * 生成路由
  * @param menus
@@ -89,6 +90,7 @@ function transitionRouter(menus) {
       newRouter.push(item);
     }
   }
+  console.log(newRouter);
   return newRouter;
 }
 const state = {
@@ -131,15 +133,21 @@ const actions = {
         commit('SET_MENUS', routerMenus.menus);
         commit('SET_BTN', routerMenus.btn);
       } else {
-        await mockRouter(id).then(response => {
-          const { data } = response;
-          newRouter = data.menus;
-          commit('SET_MENUS', data.menus);
-          localStorage.setItem('router', JSON.stringify(data));
-          commit('SET_BTN', data.btn);
-        }).catch(error => {
-          reject(error);
-        });
+        if (store.getters.userInfo.name === 'admin') {
+          newRouter = asyncRoutes;
+          commit('SET_MENUS', asyncRoutes);
+          commit('SET_BTN', ['sys:resource:add']);
+        } else {
+          await mockRouter(store.getters.token).then(response => {
+            const { data } = response;
+            newRouter = data.menus;
+            commit('SET_MENUS', data.menus);
+            localStorage.setItem('router', JSON.stringify(data));
+            commit('SET_BTN', data.btn);
+          }).catch(error => {
+            reject(error);
+          });
+        }
       }
       const rou = transitionRouter(newRouter);
       commit('SET_ROUTER', rou);

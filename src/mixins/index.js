@@ -8,6 +8,15 @@ export default {
   },
   computed: {
   },
+  mounted() {
+    if (typeof this.btnPermission !== 'undefined') {
+      for (let length = this.btnPermission.length - 2; length > -1; length--) {
+        const bool = this.RP(this.btnPermission[length]);
+        this.btnPermission[length] = bool;
+        if (bool) this.btnPermission[this.btnPermission.length - 1] += 1;
+      }
+    }
+  },
   methods: {
     /**
      * dialog关闭时清除验证结果

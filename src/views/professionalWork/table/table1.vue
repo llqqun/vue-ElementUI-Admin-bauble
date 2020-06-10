@@ -1,8 +1,9 @@
 <template>
   <div class="app-container">
     <el-row class="filter-container">
-      <el-button v-if="RP(['ent:system:add'])" type="primary" size="small" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button v-if="RP(['ent:system:batchDel'])" type="danger" icon="el-icon-delete" @click="batchDelete">批量删除</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="filterDrawer = true">搜索</el-button>
+      <el-button type="primary" size="small" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-button type="danger" icon="el-icon-delete" @click="batchDelete">批量删除</el-button>
     </el-row>
 
     <el-row>
@@ -11,24 +12,33 @@
         :data="tableData"
         row-key="id"
         border
-        :max-height="tableHeight"
+        :max-height="tableHeight - 100"
         :highlight-current-row="true"
         @select="checkboxSelect"
         @select-all="checkboxSelect"
       >
-        <el-table-column fixed type="selection" width="55" align="center" />
-        <el-table-column fixed prop="name" label="名称" min-width="120" align="center" />
-        <el-table-column prop="content" label="内容" :show-overflow-tooltip="true" min-width="150" align="center" />
-        <el-table-column prop="display_time" label="时间" min-width="150" align="center" />
-        <el-table-column label="状态" min-width="80" align="center">
+        <!--<el-table-column fixed type="selection" width="55" align="center" />-->
+        <template v-for="(item,index) in colData">
+          <el-table-column
+            v-if="item.showType.indexOf('table') !== -1"
+            :key="index"
+            :prop="item.field"
+            :label="item.title"
+            :min-width="item.width"
+            show-overflow-tooltip
+            align="center"
+            :fixed="index === 0"
+          >
+            <template slot-scope="scope">
+              <span v-if="item.status">{{ item.status(scope.row[item.field]) }}</span>
+              <span v-else>{{ scope.row[item.field] }}</span>
+            </template>
+          </el-table-column>
+        </template>
+        <el-table-column v-if="tableData.length && btnPermission[btnPermission.length-1]" :width="btnPermission[btnPermission.length-1]*90" align="center" label="操作" fixed="right">
           <template slot-scope="scope">
-            <span>{{ scope.row.status | statusFil }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column fixed="right" align="center" label="操作" min-width="220">
-          <template slot-scope="scope">
-            <el-button v-if="RP(['ent:system:edit'])" type="primary" style="margin-left: 8px;" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button v-if="RP(['ent:system:del'])" type="danger" style="margin-left: 8px;" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button v-if="btnPermission[0]" type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+            <el-button v-if="btnPermission[1]" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -46,37 +56,77 @@
       />
     </el-row>
 
+    <el-drawer
+      :with-header="false"
+      custom-class="filter-drawer"
+      direction="ttb"
+      :modal="false"
+      :visible.sync="filterDrawer"
+      :append-to-body="false"
+    >
+      <div class="filter-container">
+        <div class="filter-scope">
+          <span>手机号:</span>
+          <el-input v-model="filterForm.mobile" placeholder="搜索手机号" clearable class="filter-item" />
+        </div>
+      </div>
+      <div style="margin: 10px auto;text-align: center;">
+        <el-button type="primary" icon="el-icon-search" class="filter-btn" @click="searchHandle">确定</el-button>
+        <el-button type="warning" icon="el-icon-refresh" class="filter-btn" @click="resetFilter">重置</el-button>
+      </div>
+    </el-drawer>
+
     <el-dialog
       :visible.sync="dialogVisible"
-      :close-on-click-modal="false"
-      :title="dialogType==='add'?'新增':'编辑'"
+      custom-class="custom-form-mode"
+      :title="dialogType==='edit'?'编辑':'新增'"
       width="40%"
+      top="0"
       @close="closeDialogFun('saveForm')"
     >
-      <el-form
-        ref="saveForm"
-        :model="saveForm"
-        :rules="rules"
-
-        label-position="left"
-      >
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="saveForm.name" />
-        </el-form-item>
-        <el-form-item label="内容">
-          <el-input v-model="saveForm.content" />
-        </el-form-item>
-        <el-form-item label="日期">
-          <el-date-picker
-            v-model="saveForm.display_time"
-            align="right"
-            type="date"
-            placeholder="选择日期"
-            :picker-options="pickerOptions"
-          />
-        </el-form-item>
-      </el-form>
-      <div style="text-align:right;">
+      <el-scrollbar wrap-class="scrollbar-wrapper" class="el-scrollbar-minx">
+        <el-form
+          ref="saveForm"
+          :model="saveForm"
+          :rules="rules"
+          :inline="true"
+          label-position="left"
+        >
+          <template v-for="(item, index) in colData">
+            <el-form-item
+              v-if="item.showType.includes('form')"
+              :key="index"
+              :label="item.title"
+              :prop="item.field"
+            >
+              <template v-if="item.title.length>=5" v-slot:label>
+                <el-tooltip effect="dark" :content="item.title" placement="top">
+                  <span>{{ item.title }}</span>
+                </el-tooltip>
+              </template>
+              <template v-slot>
+                <el-input v-if="item.formType === 'input'" v-model="saveForm[item.field]" :disabled="lookDialog" />
+                <el-date-picker
+                  v-else-if="item.formType === 'date'"
+                  v-model="saveForm[item.field]"
+                  :disabled="lookDialog"
+                  type="date"
+                  :picker-options="pickerOptions"
+                  placeholder="选择还款日期"
+                />
+                <user-Select
+                  v-if="item.formType === 'select'"
+                  v-model="saveForm[item.field]"
+                  :disabled="lookDialog"
+                  placeholder="请选择"
+                  :options="item.selectData"
+                />
+              </template>
+            </el-form-item>
+          </template>
+        </el-form>
+      </el-scrollbar>
+      <div class="el-scrollbar-footer">
         <el-button type="primary" @click="confirmData">确定</el-button>
         <el-button type="danger" @click="dialogVisible=false">取消</el-button>
       </div>
@@ -90,14 +140,9 @@ import { get, post } from '@/api/common';
 import { delMessage } from '@/utils/common';
 import { deepClone, forEachRen } from '@/utils';
 
-const defaultData = {
-  'display_time': '',
-  'id': null,
-  'name': '',
-  'content': ''
-};
+const defaultData = {};
 export default {
-  name: 'Table',
+  name: 'Table1',
   filters: {
     statusFil(val) {
       const status = ['状态1', '状态2', '状态3'];
@@ -106,6 +151,11 @@ export default {
   },
   data() {
     return {
+      filterDrawer: false,
+      lookDialog: false,
+      btnPermission: ['pro:table:edit', 'pro:table:del', 0],
+      colData: [],
+      tableData: [],
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() < Date.now() - 86400000;
@@ -120,8 +170,8 @@ export default {
       saveForm: Object.assign({}, defaultData),
       dialogVisible: false,
       dialogType: 'add',
-      tableData: [],
       search: '',
+      yesOrNo: ['是', '否'],
       tableData1: [
         {
           id: '信用卡',
@@ -179,7 +229,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['tableHeight'])
+    ...mapGetters(['tableHeight', 'tableColTemplate'])
+  },
+  created() {
+    this.colData = this.colData.concat(this.tableColTemplate['table1Map']);
+    console.log(this.colData);
+    this.colData.forEach(item => {
+      defaultData[item.field] = null;
+    });
   },
   mounted() {
     this.getTableData();
@@ -189,11 +246,11 @@ export default {
       this.filterForm.current = 1;
       this.getTableData();
     },
+    resetFilter() {},
     getTableData() {
-      get('/table/list', this.filterForm).then(res => {
+      get('/table1/list', this.filterForm).then(res => {
         this.tableData = res.data.records;
         this.filterForm.total = res.data.total;
-        this.filterForm.size = res.data.size;
       }).catch(() => {
       });
     },

@@ -8,10 +8,11 @@ export function login(data) {
   });
 }
 
-export function getInfo(id) {
+export function getInfo(token) {
   return request({
     url: '/api/user/inform',
-    method: 'get'
+    method: 'get',
+    params: { token }
   });
 }
 

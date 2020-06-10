@@ -3,7 +3,7 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix" style="display: flex;flex-direction: row;align-items: center;">
-        <span>部门职位</span>
+        <span>{{ title || '部门职位' }}</span>
         <el-input
           v-model="filterText"
           style="flex: 1;margin: 0 10px;"
@@ -14,7 +14,7 @@
       <el-scrollbar wrap-class="scrollbar-wrapper" class="custom-scrollbar">
         <el-tree
           ref="tree"
-          :data="jobTable"
+          :data="jobData"
           :props="defaultProps"
           default-expand-all
           node-key="id"
@@ -52,7 +52,7 @@
           <el-input v-model="saveForm.name" placeholder="部门名称" />
         </el-form-item>
         <el-form-item label="所属部门">
-          <user-Select v-model="saveForm.deptId" :disabled="disabled" :options="depTree" label="name" />
+          <user-Select v-model="saveForm.deptId" :options="depFather" label="name" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -67,7 +67,6 @@
 import { get, post } from '@/api/common';
 import { delMessage } from '@/utils/common';
 import { deepClone } from '@/utils';
-import { mapGetters } from 'vuex';
 
 const defaultData = {
   id: null,
@@ -78,6 +77,28 @@ const defaultData = {
 export default {
   name: 'Post',
   props: {
+    reset: {
+      type: Function,
+      default: function() {
+        return false;
+      }
+    },
+    jobData: {
+      type: Array,
+      default: function() {
+        return [];
+      }
+    },
+    title: {
+      type: String,
+      default: '机构部门'
+    },
+    depFather: {
+      type: Array,
+      default: function() {
+        return [];
+      }
+    },
     depId: {
       type: Number,
       default: null
@@ -92,41 +113,26 @@ export default {
       filterText: '',
       saveForm: Object.assign({}, defaultData),
       dialogVisible: false,
-      disabled: true,
       dialogType: 'add',
-      jobTable: [],
-      depTree: [],
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
       }
     };
   },
-  computed: {
-    ...mapGetters(['tableHeight', 'organization'])
-  },
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val);
-    },
-    depId(val) {
-      this.getTableData(val);
-      this.filterText = '';
-      defaultData.deptId = val;
     }
-  },
-  mounted() {
-    this.getTableData();
-    this.getDepTableData();
   },
   methods: {
     filterNode(value, data) {
       if (!value) return true;
       return data.name.indexOf(value) !== -1;
     },
-
     handleCreate() {
       this.dialogType = 'add';
       this.saveForm = Object.assign({}, defaultData);
+      this.saveForm.deptId = this.depId;
       this.dialogVisible = true;
     },
     handleEdit(row) {
@@ -141,7 +147,7 @@ export default {
           this.saveForm.pid = this.saveForm.pid || 0;
           post('/api/system/auth/job/save', this.saveForm).then(res => {
             this.dialogVisible = false;
-            this.getTableData(this.depId);
+            this.reset();
           });
         }
       });
@@ -149,32 +155,16 @@ export default {
     handleDelete(row) {
       delMessage('/api/system/auth/job/remove/' + row.id).then(res => {
         if (res) {
-          this.getTableData(this.depId);
+          this.reset();
         }
       });
-    },
-    getTableData(val) {
-      if (!val) return;
-      get('/api/system/auth/job/list/dept/' + val).then(res => {
-        this.jobTable = res.data;
-        this.$nextTick(() => {
-          res.loading.close();
-        });
-      });
-    },
-    getDepTableData() {
-      get('/api/system/auth/dept/tree').then(res => {
-        this.depTree = res.data;
-        this.$nextTick(() => {
-          res.loading.close();
-        });
-      });
-    },
-    handleDep(data) {
-      this.$emit('lookJob', data);
     }
   }
 };
 </script>
 <style lang='scss' scoped>
+  .app-container {
+    background: none;
+    padding: 0;
+  }
 </style>

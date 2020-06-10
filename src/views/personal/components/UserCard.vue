@@ -6,7 +6,7 @@
 
     <div class="user-profile">
       <div class="box-center">
-        <pan-thumb :image="users.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
+        <pan-thumb :image="resolvePath(users.avatar)" :height="'100px'" :width="'100px'" :hoverable="false">
           <div>Hello</div>
           {{ users.name }}
         </pan-thumb>
@@ -38,6 +38,9 @@
 
 <script>
 import PanThumb from '@/components/PanThumb';
+import { mapGetters } from 'vuex';
+import { isExternal } from '@/utils/validate';
+import path from 'path';
 export default {
   components: { PanThumb },
   props: {
@@ -52,6 +55,17 @@ export default {
           lastLoginTime: ''
         };
       }
+    }
+  },
+  computed: {
+    ...mapGetters(['basePath'])
+  },
+  methods: {
+    resolvePath(routePath) {
+      if (isExternal(routePath)) {
+        return routePath;
+      }
+      return this.basePath + routePath;
     }
   }
 };

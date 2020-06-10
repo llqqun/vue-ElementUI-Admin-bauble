@@ -1,19 +1,15 @@
 import store from '@/store';
 
 /**
- * @param {Array} value
+ * @param {string|number} value
  * @returns {Boolean}
  * @example see @/views/permission/directive.vue
  */
 export default function checkPermission(value) {
-  if (value && value instanceof Array && value.length > 0) {
-    const roles = store.getters && store.getters.btnRoles;
-    const permissionRoles = value;
-    return roles.some(role => {
-      return permissionRoles.includes(role);
-    });
+  const roles = store.getters && store.getters.btnRoles;
+  if (Array.isArray(roles) && roles.length) {
+    return roles.includes(value);
   } else {
-    console.error(`参数错误!`);
     return false;
   }
 }

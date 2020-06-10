@@ -3,14 +3,24 @@ import { param2Obj } from '../src/utils';
 
 import user from './user';
 import table from './table';
-import role from './system';
+import system from './system';
 
 const mocks = [
   ...user,
-  ...role,
+  ...system,
   ...table
 ];
 
+// Mock.XHR.prototype.proxy_open = Mock.XHR.prototype.open;
+// Mock.XHR.prototype.open = function() {
+//   const responseType = this.responseType;
+//   this.proxy_open(...arguments);
+//   if (this.custom.xhr) {
+//     if (responseType) {
+//       this.custom.xhr.responseType = responseType;
+//     }
+//   }
+// };
 // for front mock
 // please use it cautiously, it will redefine XMLHttpRequest,
 // which will cause many of your third-party libraries to be invalidated(like progress event).

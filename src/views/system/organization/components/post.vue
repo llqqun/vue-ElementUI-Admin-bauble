@@ -3,7 +3,7 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix" style="display: flex;flex-direction: row;align-items: center;">
-        <span>机构部门</span>
+        <span>{{ title || '机构部门' }}</span>
         <el-input
           v-model="filterText"
           style="flex: 1;margin: 0 10px;"
@@ -14,7 +14,7 @@
       <el-scrollbar wrap-class="scrollbar-wrapper" class="custom-scrollbar">
         <el-tree
           ref="tree"
-          :data="depTree"
+          :data="tableData"
           :props="defaultProps"
           default-expand-all
           node-key="id"
@@ -23,13 +23,13 @@
           <div slot-scope="{ node, data }" class="custom-tree-node">
             <div class="tree-conner">{{ node.label }}</div>
             <div class="right-btn">
-              <el-button type="text" @click.stop="() => handleDep(data)">
+              <el-button type="text" @click.stop="handleDep(data)">
                 <svg-icon icon-class="post" />
               </el-button>
-              <el-button type="text" @click.stop="() => handleEdit(data)">
+              <el-button type="text" @click.stop="handleEdit(data)">
                 <i class="el-icon-edit" />
               </el-button>
-              <el-button type="text" @click.stop="() => handleDelete(data)">
+              <el-button type="text" @click.stop="handleDelete(data)">
                 <i class="el-icon-delete" />
               </el-button>
             </div>
@@ -54,10 +54,10 @@
           <el-input v-model="saveForm.name" placeholder="部门名称" />
         </el-form-item>
         <el-form-item label="上级部门">
-          <user-Select v-model="saveForm.pid" :options="depTree" label="name" />
+          <user-Select v-model="saveForm.pid" :options="tableData" label="name" />
         </el-form-item>
         <el-form-item label="所属机构" prop="orgId">
-          <user-Select v-model="saveForm.orgId" :disabled="true" :options="organization" label="name" />
+          <user-Select v-model="saveForm.orgId" :options="orgFather" label="name" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -84,6 +84,28 @@ const defaultData = {
 export default {
   name: 'Post',
   props: {
+    reset: {
+      type: Function,
+      default: function() {
+        return false;
+      }
+    },
+    tableData: {
+      type: Array,
+      default: function() {
+        return [];
+      }
+    },
+    title: {
+      type: String,
+      default: '机构部门'
+    },
+    orgFather: {
+      type: Array,
+      default: function() {
+        return [];
+      }
+    },
     orgId: {
       type: Number,
       default: null
@@ -99,37 +121,27 @@ export default {
       saveForm: Object.assign({}, defaultData),
       dialogVisible: false,
       dialogType: 'add',
-      depTree: [],
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
       }
     };
   },
-  computed: {
-    ...mapGetters(['tableHeight', 'organization'])
-  },
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val);
-    },
-    orgId(val) {
-      this.getTableData(val);
-      this.filterText = '';
-      defaultData.orgId = val;
     }
   },
   mounted() {
-    this.getTableData();
   },
   methods: {
     filterNode(value, data) {
       if (!value) return true;
       return data.name.indexOf(value) !== -1;
     },
-
     handleCreate() {
       this.dialogType = 'add';
       this.saveForm = Object.assign({}, defaultData);
+      this.saveForm.orgId = this.orgId;
       this.dialogVisible = true;
     },
     handleEdit(row) {
@@ -141,10 +153,9 @@ export default {
     confirmData() {
       this.$refs['saveForm'].validate(valid => {
         if (valid) {
-          this.saveForm.pid = this.saveForm.pid || 0;
           post('/api/system/auth/dept/save', this.saveForm).then(res => {
             this.dialogVisible = false;
-            this.getTableData(this.orgId);
+            this.reset();
           });
         }
       });
@@ -152,17 +163,8 @@ export default {
     handleDelete(row) {
       delMessage('/api/system/auth/dept/remove/' + row.id).then(res => {
         if (res) {
-          this.getTableData(this.orgId);
+          this.reset();
         }
-      });
-    },
-    getTableData(val) {
-      if (!val) return;
-      get('/api/system/auth/dept/tree?orgId=' + val).then(res => {
-        this.depTree = res.data;
-        this.$nextTick(() => {
-          res.loading.close();
-        });
       });
     },
     handleDep(data) {
@@ -172,4 +174,8 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+  .app-container {
+    background: none;
+    padding: 0;
+  }
 </style>

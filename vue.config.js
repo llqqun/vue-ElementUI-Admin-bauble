@@ -39,14 +39,14 @@ module.exports = {
         pathRewrite: {
           '^/dev-api/mock': ''
         }
+      },
+      [process.env.VUE_APP_BASE_API]: {
+        target: process.env.VUE_APP_PATH + `:${port}`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
       }
-      // [process.env.VUE_APP_BASE_API]: {
-      //   target: process.env.VUE_APP_PATH + `:${port}`,
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     ['^' + process.env.VUE_APP_BASE_API]: ''
-      //   }
-      // }
     },
     after: require('./mock/mock-server.js')
   },

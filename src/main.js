@@ -14,7 +14,7 @@ import router from './router';
 import * as filters from './filters';
 import mixins from './mixins';
 import '@/icons'; // icon
-import { mockXHR } from '../mock';
+
 import '@/permission'; // permission control
 import rolesPermission from '@/utils/permission';
 import userSelect from '@/components/userSelect';
@@ -31,9 +31,10 @@ Vue.prototype.$XModal = VXETable.modal;
 Vue.prototype.VXETable = VXETable;
 Vue.prototype.XEUtils = XEUtils;
 Vue.prototype.RP = rolesPermission;
-if (process.env.NODE_ENV === 'production') {
+/*import { mockXHR } from '../mock';*/
+/*if (process.env.NODE_ENV === 'production') {
   mockXHR();
-}
+}*/
 // 全局过滤器
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key]);

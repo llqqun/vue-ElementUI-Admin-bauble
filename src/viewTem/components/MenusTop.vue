@@ -28,12 +28,15 @@ import variables from '@/styles/variables.scss';
 export default {
   name: 'MenusTop',
   data() {
-    return {};
+    return {
+      oldActive: ''
+    };
   },
   computed: {
     ...mapGetters(['menus']),
     activeMenu() {
       let activePath = '';
+      let obj;
       const { path } = this.$route;
       const lastLength = path.indexOf('/', 1);
       activePath = path.substring(path.indexOf('/'), lastLength) || '/';
@@ -42,8 +45,12 @@ export default {
       }
       if (activePath === '/') {
         activePath = '/system';
+        obj = this.menus[0];
+      } else if (activePath === '/404') {
+        return this.oldActive;
       }
       this.utilMenus(activePath);
+      this.oldActive = activePath;
       return activePath;
     },
     variables() {

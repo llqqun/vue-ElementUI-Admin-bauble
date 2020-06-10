@@ -125,3 +125,82 @@
   height: 100%;
 }
 
+.app-container {
+  .el-drawer__wrapper {
+    position: absolute;
+    .filter-drawer {
+      height: fit-content !important;
+    }
+    .filter-container {
+      /*display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;*/
+      padding: 10px;
+      .filter-btn {
+        display: inline-block;
+        margin:  0 15px;
+      }
+      /deep/ .el-input--suffix .el-input__inner {
+        padding-right: 20px;
+      }
+      .filter-scope {
+        display: inline-block;
+        margin: 0 10px 10px 0;
+        //max-width: 32%;
+        .filter-item {
+          max-width: 170px;
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+
+// dialog弹框自定义样式
+.el-dialog__wrapper>.custom-form-mode{
+  position: absolute !important;
+  left: 50%;
+  top: 84px;
+  transform: translate(-50%, 0%);
+  max-height: calc(100% - 130px);
+  max-width: calc(100% - 30px);
+  min-width: 600px;
+  display: flex;
+  flex-direction: column;
+
+  .el-scrollbar-minx>.el-scrollbar__wrap {
+    max-height: calc(100vh - 262px);
+  }
+
+  .el-scrollbar__view>.el-form{
+    flex-wrap: wrap;
+    display: flex;
+  }
+
+  .el-form-item__content {
+    width: -webkit-fill-available;
+  }
+
+  .el-form--inline>.el-form-item,.el-form>.el-form-item {
+    display: flex;
+    width: 45%;
+    height: 40px;
+    margin: 0 0 18px 15px;
+  }
+
+  .el-form-item--small>.el-form-item__label {
+    width: 120px;
+  }
+
+  .el-scrollbar-minx .vue-treeselect {
+    width: 100%;
+  }
+
+  .el-scrollbar-footer {
+    text-align:right;
+    padding-top:10px;
+    margin-top:10px;
+    border-top: 1px solid #e1e1e1;
+  }
+}

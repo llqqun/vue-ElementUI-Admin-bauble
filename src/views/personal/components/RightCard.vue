@@ -19,7 +19,7 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="头像修改" name="imgUpdate">
-        <el-upload
+        <!--<el-upload
           class="avatar-uploader"
           :action="imgUploadPath"
           :show-file-list="false"
@@ -29,8 +29,22 @@
         >
           <img v-if="imageUrl" :src="basePath + imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon" />
-        </el-upload>
-        <el-button type="primary" @click="UpdateImg">修 改</el-button>
+        </el-upload>-->
+        <my-upload
+          v-model="show"
+          field="file"
+          :width="300"
+          :height="300"
+          :url="imgUploadPath"
+          :lang-ext="langCH"
+          :params="params"
+          :headers="{ 'Authorization': 'bearer ' + token }"
+          img-format="png"
+          @crop-success="cropSuccess"
+          @crop-upload-success="cropUploadSuccess"
+          @crop-upload-fail="cropUploadFail"
+        />
+        <el-button type="primary" @click="show = true">修 改</el-button>
       </el-tab-pane>
     </el-tabs>
   </el-card>
@@ -39,6 +53,8 @@
 <script>
 import { post, put } from '@/api/common';
 import { mapGetters } from 'vuex';
+import myUpload from 'vue-image-crop-upload';
+
 const defaultData = {
   id: null,
   password: '',
@@ -47,9 +63,7 @@ const defaultData = {
 };
 export default {
   name: 'RightCard',
-  computed: {
-    ...mapGetters(['userInfo', 'imgUploadPath', 'token', 'basePath'])
-  },
+  components: { myUpload },
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -71,7 +85,14 @@ export default {
       }
     };
     return {
+      show: false,
+      params: {
+        name: 'avatar'
+      },
       imageUrl: '',
+      langCH: {
+        preview: '图片预览'
+      },
       formObj: Object.assign({}, defaultData),
       activeTab: 'imgUpdate',
       imgObj: {
@@ -91,8 +112,29 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapGetters(['userInfo', 'imgUploadPath', 'token', 'basePath'])
+  },
   methods: {
-
+    cropSuccess(imgDataUrl, field) {
+      console.log('-------- crop success --------');
+      // console.log(imgDataUrl);
+    },
+    cropUploadSuccess(response) {
+      console.log('-------- upload success --------');
+      console.log(response);
+      if (response.code === 0) {
+        console.log(response.data.imgPath);
+        this.$store.commit('user/SET_AVATAR', response.data.imgPath);
+      } else {
+        this.$message.error('图片错误!');
+      }
+    },
+    cropUploadFail(status, field) {
+      console.log('-------- upload fail --------');
+      console.log(status);
+      console.log('field: ' + field);
+    },
     UpdatePassword() {
       this.$refs['formObj'].validate(valid => {
         if (valid) {

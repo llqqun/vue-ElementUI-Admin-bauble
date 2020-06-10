@@ -2,18 +2,19 @@ import Mock from 'mockjs';
 
 const data = Mock.mock({
   'items|30': [{
-    id: '@id',
-    title: '@sentence(10, 20)',
-    'status|1': ['published', 'draft', 'deleted'],
-    author: 'name',
-    display_time: '@datetime',
-    pageviews: '@integer(300, 5000)'
+    idCard: '@id',
+    name: '@cname',
+    'mobil|1': ['18775210879', '18775210999', '18775213561'],
+    address: '@Region',
+    'sex|1': [0, 1],
+    'status|1': [0, 1],
+    birthday: '@datetime'
   }]
 });
 
 export default [
   {
-    url: '/table/list',
+    url: '/table1/list',
     type: 'get',
     response: config => {
       const items = data.items;
@@ -21,7 +22,7 @@ export default [
         code: 200,
         data: {
           total: items.length,
-          items: items
+          records: items
         }
       };
     }

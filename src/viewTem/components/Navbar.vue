@@ -15,7 +15,7 @@
       </template>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="userInfo.avatar ? userInfo.avatar : imgAvater" class="user-avatar">
+          <img :src="resolvePath(userInfo.avatar)" class="user-avatar">
           <i class="el-icon-caret-bottom"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -44,6 +44,7 @@ import variables from '@/styles/variables.scss';
 import Menustop from './MenusTop';
 import Hamburger from '@/components/Hamburger';
 import Thempick from '@/components/ThemPick';
+import { isExternal } from '@/utils/validate'
 
 export default {
   components: {
@@ -57,7 +58,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['sidebar', 'userInfo', 'device']),
+    ...mapGetters(['sidebar', 'userInfo', 'device', 'basePath']),
     variables() {
       return variables;
     }
@@ -70,6 +71,12 @@ export default {
       await this.$store.dispatch('user/logout');
       // this.$router.push(`/login?redirect=${this.$route.fullPath}`); //退出记录最后的路由
       this.$router.push(`/login?redirect=/`);
+    },
+    resolvePath(routePath) {
+      if (isExternal(routePath)) {
+        return routePath;
+      }
+      return this.basePath + routePath;
     }
   }
 };

@@ -83,6 +83,20 @@ const defaultData = {
 
 export default {
   name: 'Org',
+  props: {
+    reset: {
+      type: Function,
+      default: function() {
+        return false;
+      }
+    },
+    tableData: {
+      type: Array,
+      default: function() {
+        return [];
+      }
+    }
+  },
   data() {
     return {
       defaultProps: {
@@ -93,29 +107,23 @@ export default {
       saveForm: Object.assign({}, defaultData),
       dialogVisible: false,
       dialogType: 'add',
-      tableData: [],
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
       }
     };
   },
   computed: {
-    ...mapGetters(['tableHeight'])
   },
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val);
     }
   },
-  mounted() {
-    this.getTableData();
-  },
   methods: {
     filterNode(value, data) {
       if (!value) return true;
       return data.name.indexOf(value) !== -1;
     },
-
     handleCreate() {
       this.dialogType = 'add';
       this.saveForm = Object.assign({}, defaultData);
@@ -133,7 +141,7 @@ export default {
           this.saveForm.pid = this.saveForm.pid || 0;
           post('/api/system/auth/org/save', this.saveForm).then(res => {
             this.dialogVisible = false;
-            this.getTableData();
+            this.reset();
           });
         }
       });
@@ -141,17 +149,8 @@ export default {
     handleDelete(row) {
       delMessage('/api/system/auth/org/remove/' + row.id).then(res => {
         if (res) {
-          this.getTableData();
+          this.reset();
         }
-      });
-    },
-    getTableData() {
-      this.loading = true;
-      get('/api/system/auth/org/tree').then(res => {
-        this.tableData = res.data;
-        this.$nextTick(() => {
-          res.loading.close();
-        });
       });
     },
     handleDep(data) {
@@ -161,4 +160,8 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+  .app-container {
+    background: none;
+    padding: 0;
+  }
 </style>
