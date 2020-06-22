@@ -1,4 +1,4 @@
-import Mock from 'mockjs';
+const Mock = require('mockjs');
 
 const tokens = {
   'admin': Mock.mock('@guid') + 'admin',
@@ -15,7 +15,7 @@ const data = Mock.mock({
   }]
 });
 
-export default [
+module.exports = [
   // user login
   {
     url: '/api/system/login',

@@ -1,30 +1,19 @@
-import Mock from 'mockjs';
-import { param2Obj } from '../src/utils';
+const Mock = require('mockjs');
+const { param2Obj } = require('./utils');
 
-import user from './user';
-import table from './table';
-import system from './system';
-
+const table = require('./table');
+const system = require('./system');
+const user = require('./user');
 const mocks = [
   ...user,
   ...system,
   ...table
 ];
 
-// Mock.XHR.prototype.proxy_open = Mock.XHR.prototype.open;
-// Mock.XHR.prototype.open = function() {
-//   const responseType = this.responseType;
-//   this.proxy_open(...arguments);
-//   if (this.custom.xhr) {
-//     if (responseType) {
-//       this.custom.xhr.responseType = responseType;
-//     }
-//   }
-// };
 // for front mock
 // please use it cautiously, it will redefine XMLHttpRequest,
 // which will cause many of your third-party libraries to be invalidated(like progress event).
-export function mockXHR() {
+function mockXHR() {
   // mock patch
   // https://github.com/nuysoft/Mock/issues/300
   Mock.XHR.prototype.proxy_send = Mock.XHR.prototype.send;
@@ -62,17 +51,7 @@ export function mockXHR() {
   }
 }
 
-// for mock server
-const responseFake = (url, type, respond) => {
-  return {
-    url: new RegExp(`/mock${url}`),
-    type: type || 'get',
-    response(req, res) {
-      res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond));
-    }
-  };
+module.exports = {
+  mocks,
+  mockXHR
 };
-
-export default mocks.map(route => {
-  return responseFake(route.url, route.type, route.response);
-});

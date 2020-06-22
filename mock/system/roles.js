@@ -1,4 +1,4 @@
-export const roles = [
+module.exports = [
   {
     level: 1,
     name: 'admin',

@@ -1,11 +1,11 @@
-import Mock from 'mockjs';
-import { roles } from './roles';
-import { deepClone } from '../../src/utils';
-import { adminRoutes, demoRoutes, menus } from './routes.js';
-import { adminList } from './admin';
+const Mock = require('mockjs');
+const roles = require('./roles');
+const { deepClone } = require('../utils');
+const { adminRoutes, demoRoutes, menus } = require('./routes.js');
+const adminList = require('./admin');
 
 const btn = ['sys:resource:add', 'sys:resource:edit', 'sys:resource:del', 'pro:table:edit'];
-export default [
+module.exports = [
   {
     url: '/roles',
     type: 'get',

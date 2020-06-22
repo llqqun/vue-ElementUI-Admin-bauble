@@ -133,11 +133,11 @@ const actions = {
         commit('SET_MENUS', routerMenus.menus);
         commit('SET_BTN', routerMenus.btn);
       } else {
-        if (store.getters.userInfo.name === 'admin') {
-          newRouter = asyncRoutes;
-          commit('SET_MENUS', asyncRoutes);
-          commit('SET_BTN', ['sys:resource:add']);
-        } else {
+        // if (store.getters.userInfo.name === 'admin') {
+        //   newRouter = asyncRoutes;
+        //   commit('SET_MENUS', asyncRoutes);
+        //   commit('SET_BTN', ['sys:resource:add']);
+        // } else {
           await mockRouter(store.getters.token).then(response => {
             const { data } = response;
             newRouter = data.menus;
@@ -147,7 +147,7 @@ const actions = {
           }).catch(error => {
             reject(error);
           });
-        }
+        // }
       }
       const rou = transitionRouter(newRouter);
       commit('SET_ROUTER', rou);

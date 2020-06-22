@@ -1,5 +1,4 @@
-
-export const adminRoutes = [
+const adminRoutes = [
   {
     path: '/system',
     name: 'System',
@@ -147,7 +146,18 @@ export const adminRoutes = [
             }
           }
         ]
+      }
+    ]
+  },
+  {
+    path: '/experiment',
+    component: 'Layout',
+    meta:
+      {
+        title: '实验室',
+        icon: 'example'
       },
+    children: [
       {
         path: 'components',
         noCompoent: true,
@@ -169,30 +179,9 @@ export const adminRoutes = [
         ]
       }
     ]
-  },
-  {
-    path: '/experiment',
-    component: 'Layout',
-    meta:
-      {
-        title: '实验室',
-        icon: 'example'
-      },
-    children: [
-      {
-        path: 'test',
-        name: 'test',
-        component: 'experiment/test',
-        meta:
-          {
-            title: '测试',
-            icon: 'example'
-          }
-      }
-    ]
   }
 ];
-export const demoRoutes = [
+const demoRoutes = [
   {
     path: '/professionalWork',
     component: 'Layout',
@@ -257,8 +246,7 @@ export const demoRoutes = [
     ]
   }
 ];
-
-export const menus = [
+const menus = [
   {
     id: 1,
     path: '/system',
@@ -397,3 +385,9 @@ export const menus = [
     children: []
   }
 ];
+
+module.exports = {
+  adminRoutes,
+  demoRoutes,
+  menus
+};
