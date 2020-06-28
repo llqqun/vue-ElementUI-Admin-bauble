@@ -1,7 +1,7 @@
 <template>
   <section class="app-main">
     <!-- 添加滚动条插件,高度设置为屏幕高度减去右侧顶部功能栏高度 -->
-    <el-scrollbar wrap-class="scrollbar-wrapper" style="height:calc(100vh - 84px);">
+    <el-scrollbar wrap-class="app-main-scrollbar-wrapper" style="height:calc(100vh - 84px);">
       <div class="main-outer-space">
         <transition name="fade-transform" mode="out-in">
           <keep-alive :include="cachedViews">
@@ -46,5 +46,13 @@ export default {
   .fixed-header {
     padding-right: 15px;
   }
+}
+  .app-main-scrollbar-wrapper {
+    overflow-x: hidden;
+    background-color: #f3f1f1;
+  }
+.main-outer-space {
+  padding: 10px;
+  min-height: 100%;
 }
 </style>
