@@ -15,7 +15,10 @@
   display: none;
 }
 
-
+// 重新定义tooltip宽度
+.el-tooltip__popper {
+  max-width: 40%;
+}
 // to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
   transform: none;

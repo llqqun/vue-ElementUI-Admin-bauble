@@ -128,6 +128,22 @@ export function formatTime(time, option) {
 }
 
 /**
+ * 遍历数组返回指定key值
+ * @param {*} arr 数组
+ * @param {*} str 要返回的值
+ */
+export function forEachRen(arr, str) {
+  if (arr && arr.length > 0) {
+    const renArr = [];
+    for (let i = 0, len = arr.length; i < len; i++) {
+      renArr.push(arr[i][str]);
+    }
+    return renArr;
+  } else {
+    return false;
+  }
+}
+/**
  * @param {string} url
  * @returns {Object}
  */

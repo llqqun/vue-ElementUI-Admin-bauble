@@ -125,34 +125,20 @@ const mutations = {
 const actions = {
   // 拉取用户菜单
   getUserMenu({ commit, state }, id) {
-    return new Promise(async(resolve, reject) => {
+    return new Promise((resolve, reject) => {
       let newRouter = [];
-      const routerMenus = JSON.parse(localStorage.getItem('router'));
-      if (routerMenus) {
-        newRouter = routerMenus.menus;
-        commit('SET_MENUS', routerMenus.menus);
-        commit('SET_BTN', routerMenus.btn);
-      } else {
-        // if (store.getters.userInfo.name === 'admin') {
-        //   newRouter = asyncRoutes;
-        //   commit('SET_MENUS', asyncRoutes);
-        //   commit('SET_BTN', ['sys:resource:add']);
-        // } else {
-          await mockRouter(store.getters.token).then(response => {
-            const { data } = response;
-            newRouter = data.menus;
-            commit('SET_MENUS', data.menus);
-            localStorage.setItem('router', JSON.stringify(data));
-            commit('SET_BTN', data.btn);
-          }).catch(error => {
-            reject(error);
-          });
-        // }
-      }
-      const rou = transitionRouter(newRouter);
-      commit('SET_ROUTER', rou);
-      rou.push({ path: '*', redirect: '/404', hidden: true });
-      resolve(rou);
+      mockRouter(store.getters.token).then(response => {
+        const { data } = response;
+        newRouter = data.menus;
+        commit('SET_MENUS', data.menus);
+        commit('SET_BTN', data.btn);
+        const rou = transitionRouter(newRouter);
+        commit('SET_ROUTER', rou);
+        rou.push({ path: '*', redirect: '/404', hidden: true });
+        resolve(rou);
+      }).catch(error => {
+        reject(error);
+      });
     });
   },
   resetPer({ commit, state }) {

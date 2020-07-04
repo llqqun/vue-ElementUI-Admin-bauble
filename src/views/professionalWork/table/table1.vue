@@ -8,17 +8,18 @@
 
     <el-row>
       <el-table
-        ref="tableData"
-        :data="tableData"
+        ref="tableTem"
+        :data="tableTem.data"
         row-key="id"
         border
         :max-height="tableHeight - 100"
         :highlight-current-row="true"
+        @row-dblclick="lookData"
         @select="checkboxSelect"
         @select-all="checkboxSelect"
       >
-        <!--<el-table-column fixed type="selection" width="55" align="center" />-->
-        <template v-for="(item,index) in colData">
+        <el-table-column fixed type="selection" width="55" align="center" />
+        <template v-for="(item,index) in tableTem.col">
           <el-table-column
             v-if="item.showType.indexOf('table') !== -1"
             :key="index"
@@ -35,7 +36,7 @@
             </template>
           </el-table-column>
         </template>
-        <el-table-column v-if="tableData.length && btnPermission[btnPermission.length-1]" :width="btnPermission[btnPermission.length-1]*90" align="center" label="操作" fixed="right">
+        <el-table-column v-if="tableTem.data.length && btnPermission[btnPermission.length-1]" :width="btnPermission[btnPermission.length-1]*90" align="center" label="操作" fixed="right">
           <template slot-scope="scope">
             <el-button v-if="btnPermission[0]" type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button v-if="btnPermission[1]" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
@@ -82,6 +83,7 @@
       :title="dialogType==='edit'?'编辑':'新增'"
       width="40%"
       top="0"
+      :close-on-click-modal="false"
       @close="closeDialogFun('saveForm')"
     >
       <el-scrollbar wrap-class="scrollbar-wrapper" class="el-scrollbar-minx">
@@ -90,12 +92,14 @@
           :model="saveForm"
           :rules="rules"
           :inline="true"
+          label-width="80px"
           label-position="left"
         >
-          <template v-for="(item, index) in colData">
+          <template v-for="(item, index) in tableTem.col">
             <el-form-item
-              v-if="item.showType.includes('form')"
+              v-if="item.showType.includes('colForm')"
               :key="index"
+              class="col-form-item"
               :label="item.title"
               :prop="item.field"
             >
@@ -115,12 +119,44 @@
                   placeholder="选择还款日期"
                 />
                 <user-Select
-                  v-if="item.formType === 'select'"
+                  v-else-if="item.formType === 'select'"
                   v-model="saveForm[item.field]"
                   :disabled="lookDialog"
                   placeholder="请选择"
                   :options="item.selectData"
                 />
+                <el-switch
+                  v-else-if="item.formType === 'switch'"
+                  v-model="saveForm[item.field]"
+                  :active-text="item.option.key2"
+                  :inactive-text="item.option.key1"
+                  :active-value="1"
+                  :inactive-value="0">
+                </el-switch>
+                <el-input
+                  v-else-if="item.formType === 'textarea'"
+                  type="textarea"
+                  v-model="saveForm[item.field]" />
+              </template>
+            </el-form-item>
+            <el-form-item
+              v-if="item.showType.includes('rowForm')"
+              :key="index"
+              class="row-form-item"
+              :label="item.title"
+              :prop="item.field"
+            >
+              <template v-if="item.title.length>=5" v-slot:label>
+                <el-tooltip effect="dark" :content="item.title" placement="top">
+                  <span>{{ item.title }}</span>
+                </el-tooltip>
+              </template>
+              <template v-slot>
+                <el-input
+                  v-if="item.formType === 'textarea'"
+                  v-model="saveForm[item.field]"
+                  :rows="3"
+                  type="textarea" />
               </template>
             </el-form-item>
           </template>
@@ -128,7 +164,7 @@
       </el-scrollbar>
       <div class="el-scrollbar-footer">
         <el-button type="primary" @click="confirmData">确定</el-button>
-        <el-button type="danger" @click="dialogVisible=false">取消</el-button>
+        <el-button type="info" @click="dialogVisible=false">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -143,18 +179,15 @@ import { deepClone, forEachRen } from '@/utils';
 const defaultData = {};
 export default {
   name: 'Table1',
-  filters: {
-    statusFil(val) {
-      const status = ['状态1', '状态2', '状态3'];
-      return status[val];
-    }
-  },
   data() {
     return {
       filterDrawer: false,
       lookDialog: false,
       btnPermission: ['pro:table:edit', 'pro:table:del', 0],
-      colData: [],
+      tableTem: {
+        col: [],
+        data: []
+      },
       tableData: [],
       pickerOptions: {
         disabledDate(time) {
@@ -170,58 +203,6 @@ export default {
       saveForm: Object.assign({}, defaultData),
       dialogVisible: false,
       dialogType: 'add',
-      search: '',
-      yesOrNo: ['是', '否'],
-      tableData1: [
-        {
-          id: '信用卡',
-          name: '逾期180天内',
-          amount1: '20%',
-          amount2: '3.2',
-          Count: { id: [8, 1], name: [3, 1] }
-        }, {
-          id: '信用卡',
-          name: '逾期180天内',
-          amount1: '15%',
-          amount2: '4.43',
-          Count: { id: [0, 0], name: [0, 0] }
-        }, {
-          id: '信用卡',
-          name: '逾期180天内',
-          amount1: '32%',
-          amount2: '1.9',
-          Count: { id: [0, 0], name: [0, 0] }
-        }, {
-          id: '信用卡',
-          name: '逾期180天-360天',
-          amount1: '20%',
-          amount2: '2.2',
-          Count: { id: [0, 0], name: [3, 1] }
-        }, {
-          id: '信用卡',
-          name: '逾期180天-360天',
-          amount1: '15%',
-          amount2: '4.1',
-          Count: { id: [0, 0], name: [0, 0] }
-        }, {
-          id: '信用卡',
-          name: '逾期180天-360天',
-          amount1: '25%',
-          amount2: '4.1',
-          Count: { id: [0, 0], name: [0, 0] }
-        }, {
-          id: '信用卡',
-          name: '360天',
-          amount1: '18%',
-          amount2: '4.1',
-          Count: { id: [0, 0], name: [1, 2], amount1: [0, 0] }
-        }, {
-          id: '信用卡',
-          name: '已核销',
-          amount1: '15%',
-          amount2: '4.1',
-          Count: { id: [0, 0], name: [1, 2], amount1: [0, 0] }
-        }],
       deleteList: [],
       rules: {
         name: [{ required: true, message: '请输入内容', trigger: 'blur' }]
@@ -232,24 +213,36 @@ export default {
     ...mapGetters(['tableHeight', 'tableColTemplate'])
   },
   created() {
-    this.colData = this.colData.concat(this.tableColTemplate['table1Map']);
-    console.log(this.colData);
-    this.colData.forEach(item => {
-      defaultData[item.field] = null;
+    this.tableTem.col = this.tableColTemplate['tableMap'];
+    this.tableTem.col.forEach(item => {
+      defaultData[item.field] = item.defaultVal || null;
     });
   },
   mounted() {
     this.getTableData();
   },
   methods: {
+    lookData(row) {
+      this.lookDialog = true;
+      this.saveForm = deepClone(row);
+      this.dialogType = '查看';
+      this.dialogVisible = true;
+    },
     searchHandle() {
       this.filterForm.current = 1;
       this.getTableData();
     },
-    resetFilter() {},
+    resetFilter() {
+      this.filterForm = {
+        size: 25,
+        total: 1,
+        current: 1,
+        name: null
+      };
+    },
     getTableData() {
       get('/table1/list', this.filterForm).then(res => {
-        this.tableData = res.data.records;
+        this.tableTem.data = res.data.records;
         this.filterForm.total = res.data.total;
       }).catch(() => {
       });
@@ -262,20 +255,27 @@ export default {
       this.filterForm.size = size;
       this.getTableData();
     },
-    confirmData() {},
+    confirmData() {
+      this.$refs.saveForm.validate(valid => {
+        if (valid) {
+          post('/table/save', this.saveForm).then(res => {
+            this.$message.success(res.message);
+            this.dialogVisible = false;
+          });
+        }
+      });
+    },
     handleCreate() {
+      this.lookDialog = false;
       this.saveForm = Object.assign({}, defaultData);
       this.dialogType = 'add';
       this.dialogVisible = true;
-      this.$nextTick(() => {
-        this.$refs.saveForm.clearValidate();
-      });
     },
     batchDelete() {
       if (!this.deleteList.length) {
         return this.$message.error('请先选择数据!');
       }
-      const delList = forEachRen(this.deleteList, 'id');
+      const delList = forEachRen(this.deleteList, 'idCard');
       const _this = this;
       this.$confirm('您确定要删除这些数据吗?', '警告', {
         confirmButtonText: '确定',
@@ -283,10 +283,10 @@ export default {
         type: 'warning'
       })
         .then(async() => {
-          await post('/mock/delete/batch', {
+          await post('/delete/batch', {
             idList: delList
           }).then(() => {
-            if (delList.length === this.tableData.length) {
+            if (delList.length === this.tableTem.data.length) {
               this.filterForm.current =
                   this.filterForm.current - 1 > 0 ? this.filterForm.current - 1 : 1;
             }
@@ -303,17 +303,15 @@ export default {
         });
     },
     handleEdit(row) {
+      this.lookDialog = false;
       this.saveForm = deepClone(row);
       this.dialogType = 'edit';
       this.dialogVisible = true;
-      this.$nextTick(() => {
-        this.$refs.saveForm.clearValidate();
-      });
     },
     handleDelete(row) {
       delMessage('/mock/template/remove/' + row.id).then(res => {
         if (res) {
-          if (this.tableData.length === 1) {
+          if (this.tableTem.data.length === 1) {
             this.filterForm.current =
                 this.filterForm.current - 1 > 0 ? this.filterForm.current - 1 : 1;
           }
@@ -323,18 +321,6 @@ export default {
     },
     checkboxSelect(select) {
       this.deleteList = select;
-    },
-    arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      if (row['Count']) {
-        const obj = row['Count'];
-        const arr = Object.keys(row['Count']);
-        if (arr.includes(column.property)) {
-          return obj[column.property];
-        }
-        if (!Object.keys(row).includes(column.property)) {
-          return [0, 0];
-        }
-      }
     }
   }
 };

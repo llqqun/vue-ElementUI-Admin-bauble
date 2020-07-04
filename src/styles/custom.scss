@@ -171,18 +171,33 @@
   }
 
   .el-form-item__content {
-    width: -webkit-fill-available;
+    //width: -webkit-fill-available;
+    //width: 120px;
+    flex: 1;
   }
 
-  .el-form--inline>.el-form-item,.el-form>.el-form-item {
+  .el-form--inline>.col-form-item,.el-form>.col-form-item {
     display: flex;
-    width: 45%;
+    width: 50%;
     height: 40px;
-    margin: 0 0 18px 15px;
+    margin-right: 0;
+    margin-bottom:18px;
   }
-
+  .col-form-item .el-form-item__content,.row-form-item .el-form-item__content {
+    margin-right: 15px;
+  }
+  .el-form>.row-form-item {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom:20px;
+    display: flex;
+  }
   .el-form-item--small>.el-form-item__label {
-    width: 120px;
+    /*display: inline-block;
+    width: 120px;*/
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow : ellipsis
   }
 
   .el-scrollbar-minx .vue-treeselect {
