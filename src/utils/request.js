@@ -7,7 +7,6 @@ let loadingInstance;
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000, // 超时设置
   retry: 3, // 请求次数
   retryInterval: 1000
@@ -17,6 +16,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     loadingInstance = Loading.service({ text: '', spinner: 'loading', background: 'rgba(0, 0, 0, 0.2)' });
+    console.log(config);
     if (store.getters.token) {
       config.headers['Authorization'] = getToken();
     }
@@ -59,7 +59,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error); // for debug
+    console.log(error); // for debug
     loadingInstance.close();
     Message({
       message: error.message || '连接异常',

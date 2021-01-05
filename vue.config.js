@@ -34,7 +34,7 @@ module.exports = {
     },
     proxy: {
       '/dev-api/mock': {
-        target: `http://127.0.0.1:${port}/mock`,
+        target: `http://127.0.0.1:${port}`,
         changeOrigin: true,
         pathRewrite: {
           '^/dev-api/mock': ''

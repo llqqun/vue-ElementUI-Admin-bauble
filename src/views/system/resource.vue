@@ -16,7 +16,7 @@
       tree-config
       highlight-hover-row
       :max-height="tableHeight - 43"
-      :data="tableTree"
+      :data="resourceTree"
     >
       <template v-for="(item,index) in tableColumns">
         <vxe-table-column
@@ -117,7 +117,8 @@
 </template>
 
 <script>
-import { get, post } from '@/api/common';
+import { getResourceList, delResource, saveResource } from '@/api/system';
+import { get } from '@/api/common';
 import { delMessage } from '@/utils/common';
 import { deepClone } from '@/utils';
 import { mapGetters } from 'vuex';
@@ -234,19 +235,16 @@ export default {
       this.$message.success('提交成功');
     },
     async getResourceTree() {
-      await get('/menus').then(res => {
-        this.resourceTree = res.data.menus;
+      getResourceList().then(res => {
+        this.resourceTree = res.data.list;
         this.$nextTick(() => {
           this.$refs.xTree.setAllTreeExpansion(true);
         });
       });
     },
     getMenuDict() {
-      get('/api/sys/dict/detail/list/code/RESOURCE').then(res => {
+      getResourceList().then(res => {
         this.dict = res.data;
-        this.$nextTick(() => {
-          res.loading.close();
-        });
       });
     }
   }

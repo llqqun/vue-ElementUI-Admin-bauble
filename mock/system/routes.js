@@ -175,6 +175,15 @@ const adminRoutes = [
               title: '图片裁剪',
               icon: ''
             }
+          },
+          {
+            path: 'spider',
+            name: 'Spider',
+            component: 'professionalWork/components/spider',
+            meta: {
+              title: '蜘蛛',
+              icon: ''
+            }
           }
         ]
       }

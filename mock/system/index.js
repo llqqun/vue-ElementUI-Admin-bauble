@@ -7,6 +7,19 @@ const adminList = require('./admin');
 const btn = ['sys:resource:add', 'sys:resource:edit', 'sys:resource:del', 'pro:table:edit'];
 module.exports = [
   {
+    url: '/resource/list',
+    type: 'get',
+    response: config => {
+      return {
+        code: 200,
+        data: {
+          list: menus,
+          total: 90
+        }
+      };
+    }
+  },
+  {
     url: '/roles',
     type: 'get',
     response: _ => {

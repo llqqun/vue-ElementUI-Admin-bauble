@@ -168,7 +168,7 @@ $cursor: #fff;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
-    /deep/ .el-form-item__content {
+    ::v-deep .el-form-item__content {
       display: flex;
       flex-direction: row;
       align-items: center;

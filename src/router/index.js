@@ -3,9 +3,7 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-/* Layout */
-/*import Layout from '@/layout';*/
-import ViewTem from '@/viewTem';
+import Layout from '@/viewTem';
 
 /**
  * noCompoent          为true时使得该属性路由下的子路由和本级路由平级
@@ -15,7 +13,7 @@ import ViewTem from '@/viewTem';
 export const constantRoutes = [
   {
     path: '/redirect',
-    component: ViewTem,
+    component: Layout,
     hidden: true,
     children: [{
       path: '/redirect/:path*',
@@ -31,7 +29,7 @@ export const constantRoutes = [
 
   {
     path: '/404',
-    component: ViewTem,
+    component: Layout,
     redirect: '/404/index',
     hidden: true,
     children: [{
@@ -46,7 +44,7 @@ export const constantRoutes = [
 
   {
     path: '/',
-    component: ViewTem,
+    component: Layout,
     redirect: '/dashboard',
     hidden: true,
     children: [
