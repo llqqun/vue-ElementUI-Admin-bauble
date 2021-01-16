@@ -64,7 +64,7 @@ module.exports = [
 
   // user logout
   {
-    url: '/user/logout',
+    url: '/mock/user/logout',
     type: 'post',
     response: _ => {
       return {

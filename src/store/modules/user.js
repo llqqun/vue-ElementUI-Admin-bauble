@@ -2,6 +2,7 @@ import { login, logout, getInfo } from '@/api/user';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 import { resetRouter } from '@/router';
 import store from '../index';
+
 const getDefaultState = () => {
   return {
     token: getToken(),
@@ -47,7 +48,11 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       if (state.token === 'admin') {
-        commit('SET_USERINFO', { id: 99999, name: 'admin', avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif' });
+        commit('SET_USERINFO', {
+          id: 99999,
+          name: 'admin',
+          avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
+        });
         resolve();
       } else {
         getInfo(state.token).then(response => {
@@ -64,25 +69,16 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      if (state.userInfo.name === 'admin') {
+      logout(state.token).then(() => {
         removeToken();
         resetRouter();
         commit('RESET_STATE');
         store.dispatch('tagsView/delAllViews', null, { root: true });
         store.dispatch('permission/resetPer');
         resolve();
-      } else {
-        logout(state.token).then(() => {
-          removeToken();
-          resetRouter();
-          commit('RESET_STATE');
-          store.dispatch('tagsView/delAllViews', null, { root: true });
-          store.dispatch('permission/resetPer');
-          resolve();
-        }).catch(error => {
-          reject(error);
-        });
-      }
+      }).catch(error => {
+        reject(error);
+      });
     });
   },
 

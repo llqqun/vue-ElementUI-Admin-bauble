@@ -41,14 +41,35 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登 入</el-button>
+      <el-form-item>
+        <div class="yzm-flex">
+          <span class="svg-container">
+            <svg-icon icon-class="image" />
+          </span>
+          <el-input
+            ref="captcha"
+            v-model="loginForm.captcha"
+            placeholder="验证码"
+            name="captcha"
+            type="text"
+            tabindex="1"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="svg-container img-yzm" @click="getYzm">
+            <img :src="yzmUrl" alt="">
+          </span>
+        </div>
+      </el-form-item>
+
+      <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">登 入</el-button>
 
     </el-form>
   </div>
 </template>
 
 <script>
-
+  const Mock = require('mockjs');
+import { getYZM } from '@/api/global';
 export default {
   name: 'Login',
   data() {
@@ -69,12 +90,14 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '123456'
+        password: '123456',
+        captcha: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
+      yzmUrl: '',
       loading: false,
       passwordType: 'password',
       redirect: undefined
@@ -87,6 +110,9 @@ export default {
       },
       immediate: true
     }
+  },
+  created() {
+    this.getYzm();
   },
   methods: {
     showPwd() {
@@ -113,6 +139,12 @@ export default {
           console.log('error submit!!');
           return false;
         }
+      });
+    },
+    getYzm() {
+      getYZM().then(res => {
+        this.yzmUrl = Mock.Random.dataImage('60x40', Mock.mock({ 'regexp': /\w{4}/ }).regexp);
+        this.loginForm.captcha = process.env.NODE_ENV === 'development' ? res.data.code : '';
       });
     }
   }
@@ -190,8 +222,7 @@ $light_gray:#eee;
 
   .login-form {
     position: relative;
-    width: 30vw;
-    max-width: 520px;
+    width: 400px;
     padding: 25px;
     top: 200px;
     border-radius: 5px;
@@ -232,6 +263,26 @@ $light_gray:#eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+
+  .yzm-flex{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .img-yzm {
+    padding: 0!important;
+    min-width: 20%;
+    line-height: 40px;
+    height: 40px;
+    margin-right: 5px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>

@@ -1,5 +1,11 @@
 import request from '@/utils/request';
 
+export function getYZM() {
+  return request({
+    url: '/mock/code',
+    method: 'get'
+  });
+}
 export function mockMenu(data) {
   return request({
     url: '/menus',

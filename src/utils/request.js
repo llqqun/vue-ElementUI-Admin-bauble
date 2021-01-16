@@ -16,7 +16,6 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     loadingInstance = Loading.service({ text: '', spinner: 'loading', background: 'rgba(0, 0, 0, 0.2)' });
-    console.log(config);
     if (store.getters.token) {
       config.headers['Authorization'] = getToken();
     }
