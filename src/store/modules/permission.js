@@ -2,97 +2,53 @@ import { constantRoutes, asyncRoutes } from '@/router';
 import { mockMenu, mockRouter } from '@/api/global';
 import viewTem from '@/viewTem';
 import store from '@/store';
-/**
- * 生成路由
- * @param menus
- */
-function filterTreeMenus(menus) {
-  return menus.filter(route => {
-    if (route.component) {
-      // Layout组件特殊处理
-      if (route.component === 'Layout') {
-        route.component = viewTem;
-      } else {
-        route.component = loadView(route.component);
-      }
-    }
-    if (route.children != null && route.children && route.children.length) {
-      route.children = filterTreeMenus(route.children);
-    }
-    return true;
-  });
-}
 
-/**
- * 路由懒加载
- * @param route
- * @param aynRoute
- * @returns {boolean|{[p: string]: *}}
- */
-function loadView(routePath) {
-  return (resolve) => require([`@/views/${routePath}`], resolve);
-}
-
-/**
- * 嵌套路由转换
- * @param router 生成的路由表
- * @param prefix
- * @returns {Array}
- */
-function delteFakeParent(router, prefix) {
-  var newRouter = { ...router };
-  if (prefix) {
-    newRouter.path = prefix + '/' + router.path;
-  }
-  if (!router.path) return false;
-  if (!router.children) return newRouter;
-  var children = [];
-  if (router.noCompoent) {
-    for (let i = 0; i < router.children.length; i++) {
-      const item = delteFakeParent(router.children[i], newRouter.path);
-      if (Array.isArray(item)) {
-        item.forEach(el => {
-          children.push(el);
-        });
-      } else {
-        children.push(item);
-      }
-    }
-    newRouter = children;
-  } else {
-    for (let i = 0; i < router.children.length; i++) {
-      const item = delteFakeParent(router.children[i]);
-      if (Array.isArray(item)) {
-        item.forEach(el => {
-          children.push(el);
-        });
-      } else {
-        children.push(item);
-      }
-    }
-    newRouter.children = children;
-  }
-
-  return newRouter;
-}
 /* 菜单生成路由 */
 function transitionRouter(menus) {
   let accessedRoutes;
-  const newRouter = [];
   if (menus.length) {
-    accessedRoutes = filterTreeMenus(menus);
+    accessedRoutes = filterTreeMenus(asyncRoutes, menus);
   } else {
     accessedRoutes = [];
   }
-  for (let i = 0; i < accessedRoutes.length; i++) {
-    const item = delteFakeParent(accessedRoutes[i]);
-    if (item) {
-      newRouter.push(item);
-    }
-  }
-  console.log(newRouter);
-  return newRouter;
+  return accessedRoutes;
 }
+
+/**
+ * 生成路由
+ * @param routes
+ * @param rolesMenu
+ * @param path
+ */
+function filterTreeMenus(routes = [], rolesMenu, path) {
+  let res = [];
+  rolesMenu.forEach(node => {
+    if (node.path === 'components') debugger;
+    if (node.noComponent) {
+      res = res.concat(filterTreeMenus(routes, node.children, node.path));
+    } else {
+      const routeObj = vailPer(routes, node);
+      if (routeObj) {
+        if (node.children) {
+          routeObj['children'] = filterTreeMenus(routeObj.children, node.children, routeObj.path) || [];
+        }
+        res.push(routeObj);
+      } else {
+        console.log(node);
+      }
+    }
+  });
+  return res;
+}
+
+function vailPer(routes, aynRoute) {
+  if (aynRoute.path && aynRoute.path !== '') {
+    const obj = routes.find(item => item.path === aynRoute.path);
+    if (obj) return { ...obj };
+  }
+  return false;
+}
+
 const state = {
   router: [],
   btnRoles: [],
@@ -105,7 +61,7 @@ const mutations = {
     state.leftMenus = data || [];
   },
   SET_ROUTER: (state, data) => {
-    state.router = constantRoutes.concat(data);
+    state.router = data;
   },
   SET_MENUS: (state, data) => {
     state.menus = data;
@@ -133,14 +89,15 @@ const actions = {
         commit('SET_MENUS', data.menus);
         commit('SET_BTN', data.btn);
         const rou = transitionRouter(newRouter);
-        commit('SET_ROUTER', rou);
         rou.push({ path: '*', redirect: '/404', hidden: true });
+        commit('SET_ROUTER', rou);
         resolve(rou);
       }).catch(error => {
         reject(error);
       });
     });
   },
+
   resetPer({ commit, state }) {
     commit('REMOVE_MENUS');
   }

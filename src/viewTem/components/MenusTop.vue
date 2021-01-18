@@ -12,12 +12,11 @@
       v-for="menu in menus"
       ref="menu"
       :key="menu.path"
-      :icon="menu.meta && menu.meta.icon"
       :index="menu.path"
       @click="setMenus(menu)"
     >
-      <svg-icon :icon-class="menu.meta && menu.meta.icon" />
-      <span slot="title">{{ menu.meta && menu.meta.title }}</span>
+      <svg-icon :icon-class="menu.icon" />
+      <span slot="title">{{ menu.name }}</span>
     </el-menu-item>
   </el-menu>
 </template>
@@ -47,18 +46,18 @@ export default {
         activePath = '/system';
         obj = this.menus[0];
       } else if (activePath === '/404') {
-        return this.oldActive;
+        return '/system';
       }
       this.utilMenus(activePath);
-      this.oldActive = activePath;
       return activePath;
     },
     variables() {
       return variables;
     }
   },
-
-  mounted() {},
+  mounted() {
+    // console.log(this.menus)
+  },
   methods: {
     setMenus(menu) {
       this.$store.commit('permission/LEFT_MENUS', { ...menu });

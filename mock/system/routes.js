@@ -1,193 +1,191 @@
 const adminRoutes = [
   {
-    path: '/system',
-    name: 'System',
-    component: 'Layout',
-    redirect: 'noRedirect',
-    meta:
+    'children': [
       {
-        title: '系统管理',
-        icon: 'example'
-      },
-    children: [
-      {
-        path: 'resource',
-        name: 'Resource',
-        component: 'system/resource',
-        meta:
-          {
-            title: '菜单管理',
-            icon: 'mentus'
-          },
-        hidden: false
+        'hidden': 0,
+        'icon': 'mentus',
+        'id': 21,
+        'name': '菜单管理',
+        'noComponent': false,
+        'path': 'resource',
+        'pid': 19,
+        'sort': 0,
+        'status': 1,
+        'type': 0
       },
       {
-        path: 'admin',
-        name: 'Admin',
-        component: 'system/admin',
-        hidden: 0,
-        meta:
-          {
-            title: '用户管理',
-            icon: 'example'
-          }
+        'hidden': 0,
+        'icon': 'roles',
+        'id': 22,
+        'name': '角色管理',
+        'noComponent': false,
+        'path': 'roles',
+        'pid': 19,
+        'sort': 0,
+        'status': 1,
+        'type': 0
       },
       {
-        path: 'roles',
-        name: 'Roles',
-        component: 'system/roles',
-        meta:
-          {
-            title: '角色管理',
-            icon: 'mentus'
-          },
-        hidden: false
+        'hidden': 0,
+        'icon': 'admin',
+        'id': 23,
+        'name': '用户管理',
+        'noComponent': false,
+        'path': 'admin',
+        'pid': 19,
+        'sort': 0,
+        'status': 1,
+        'type': 0
       },
       {
-        path: 'organization',
-        name: 'Organization',
-        component: 'system/organization',
-        meta:
-          {
-            title: '组织机构',
-            icon: 'mentus'
-          },
-        hidden: false
+        'alias': '',
+        'hidden': 0,
+        'icon': 'example',
+        'id': 106,
+        'name': '系统配置',
+        'noComponent': false,
+        'path': 'configuration',
+        'pid': 19,
+        'sort': 0,
+        'status': 1,
+        'type': 0
       },
       {
-        path: 'monitoringSYS',
-        noCompoent: true,
-        meta: {
-          title: '系统监控',
-          icon: 'mentus'
-        },
-        children: [{
-          path: 'loginRecord',
-          name: 'LoginRecord',
-          component: 'system/monitoring/loginRecord',
-          meta: {
-            title: '系统登入记录'
-          }
-        },
-        {
-          path: 'sysLog',
-          name: 'SysLog',
-          component: 'system/monitoring/sysLog',
-          meta: {
-            title: '系统操作日志'
-          }
-        },
-        {
-          path: 'serviceState',
-          name: 'ServiceState',
-          component: 'system/monitoring/serviceState',
-          meta: {
-            title: '服务器状况'
-          }
-        },
-        {
-          path: 'online',
-          name: 'Online',
-          component: 'system/monitoring/online',
-          meta: {
-            title: '在线用户'
-          }
-        }
-        ]
+        'alias': '',
+        'hidden': 0,
+        'icon': 'organization',
+        'id': 127,
+        'name': '组织机构',
+        'noComponent': false,
+        'path': 'organization',
+        'pid': 19,
+        'sort': 0,
+        'status': 1,
+        'type': 0
       },
       {
-        path: 'https://www.baidu.com',
-        component: 'Layout',
-        meta:
-          {
-            title: '百度搜索',
-            icon: 'mentus'
-          },
-        hidden: false
+        'alias': '',
+        'hidden': 0,
+        'icon': 'dashboard',
+        'id': 130,
+        'name': '数据字典',
+        'noComponent': false,
+        'path': 'dictionary',
+        'pid': 19,
+        'sort': 0,
+        'status': 1,
+        'type': 0
+      },
+      {
+        'alias': '',
+        'hidden': 0,
+        'icon': 'timeOut',
+        'id': 166,
+        'name': '定时任务',
+        'noComponent': false,
+        'path': 'timeOut',
+        'pid': 19,
+        'sort': 0,
+        'status': 1,
+        'type': 0
+      },
+      {
+        'alias': '',
+        'hidden': 1,
+        'icon': 'timeOut',
+        'id': 167,
+        'name': '定时任务日志',
+        'noComponent': false,
+        'path': 'taskLog',
+        'pid': 19,
+        'sort': 0,
+        'status': 1,
+        'type': 0
       }
-    ]
+    ],
+    'hasChild': true,
+    'hidden': 0,
+    'icon': 'system1',
+    'id': 19,
+    'name': '系统管理',
+    'noComponent': false,
+    'path': '/system',
+    'pid': 0,
+    'sort': 0,
+    'status': 1,
+    'type': 1
   },
   {
-    path: '/professionalWork',
-    component: 'Layout',
-    hidden: 0,
-    meta:
+    'alias': '',
+    'children': [
       {
-        title: '业务功能',
-        icon: 'example'
-      },
-    children: [
-      {
-        path: 'table',
-        noCompoent: true,
-        meta:
-          {
-            title: '表格',
-            icon: 'example'
-          },
+        'alias': '',
+        'hidden': 0,
+        'icon': 'example',
+        'id': 293,
+        'name': '表格',
+        'noComponent': true,
+        'path': 'table',
+        'pid': 292,
+        'sort': 10,
+        'status': 1,
+        'type': 0,
         children: [
           {
+            id: 2965,
+            'pid': 293,
             path: 'table1',
-            name: 'Table1',
-            component: 'professionalWork/table/table1',
-            meta: {
-              title: '综合表格',
-              icon: ''
-            }
+            name: '表格1',
+            'status': 1,
+            'type': 1,
+            'icon': 'example',
+            'noComponent': false
           },
           {
+            id: 2966,
+            'pid': 293,
             path: 'table2',
-            name: 'Table2',
-            component: 'professionalWork/table/table2',
-            title: '复杂表格',
-            meta: {
-              title: '复杂表格',
-              icon: ''
-            }
+            name: '表格2',
+            'type': 1,
+            'status': 1,
+            'icon': 'example',
+            'noComponent': false
           }
         ]
-      }
-    ]
-  },
-  {
-    path: '/experiment',
-    component: 'Layout',
-    meta:
-      {
-        title: '实验室',
-        icon: 'example'
       },
-    children: [
       {
-        path: 'components',
-        noCompoent: true,
-        meta:
-          {
-            title: '组件',
-            icon: 'example'
-          },
+        'alias': '',
+        'hidden': 0,
+        'icon': 'example',
+        'id': 294,
+        'name': '组件',
+        'noComponent': true,
+        'path': 'components',
+        'pid': 292,
+        'sort': 10,
+        'status': 1,
+        'type': 0,
         children: [
           {
             path: 'vueCropper',
-            name: 'VueCropper',
-            component: 'professionalWork/components/vueCropper',
-            meta: {
-              title: '图片裁剪',
-              icon: ''
-            }
-          },
-          {
-            path: 'spider',
-            name: 'Spider',
-            component: 'professionalWork/components/spider',
-            meta: {
-              title: '蜘蛛',
-              icon: ''
-            }
+            name: '图片裁剪',
+            'icon': 'example',
+            'noComponent': false
           }
         ]
       }
-    ]
+    ],
+    'hasChild': true,
+    'hidden': 0,
+    'icon': 'table',
+    'id': 292,
+    'name': '功能模块',
+    'noComponent': false,
+    'path': '/professionalWork',
+    'pid': 0,
+    'sort': 0,
+    'status': 1,
+    'type': 1
   }
 ];
 const demoRoutes = [

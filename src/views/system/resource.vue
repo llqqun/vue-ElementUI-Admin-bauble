@@ -59,21 +59,18 @@
             <el-radio v-for="(item,index) in dict" :key="index" v-model="saveForm.type" :label="item.value">{{ item.label }}</el-radio>
           </vxe-form-item>
           <vxe-form-item title="上级菜单" span="24">
-            <user-Select v-model="saveForm.pid" :options="selectTree" match-keys="type" :filter-val="2" label="title" placeholder="请选择父级菜单" />
+            <user-Select v-model="saveForm.pid" :options="selectTree" match-keys="type" :filter-val="2" label="name" placeholder="请选择父级菜单" />
           </vxe-form-item>
           <vxe-form-item :title="controlleText + '名称'" field="title" span="24">
             <vxe-input v-model="saveForm.title" placeholder="请输入名称" />
           </vxe-form-item>
-          <vxe-form-item v-if="saveForm.type === 1" title="组件地址" span="24">
-            <vxe-input v-model="saveForm.component" placeholder="" />
-          </vxe-form-item>
-          <vxe-form-item v-if="saveForm.type !== 2" title="路由地址" span="12" field="path">
+          <vxe-form-item v-if="saveForm.type === 1" title="路由地址" span="24" field="path">
             <vxe-input v-model="saveForm.path" placeholder="" />
           </vxe-form-item>
           <vxe-form-item v-if="saveForm.type === 2" title="权限标识" field="alias" span="12">
             <vxe-input v-model="saveForm.alias" />
           </vxe-form-item>
-          <vxe-form-item v-if="saveForm.type !== 2" title="菜单图标" :span="12">
+          <vxe-form-item v-if="saveForm.type !== 2" title="图标" :span="24">
             <el-popover
               placement="bottom-start"
               width="460"
@@ -130,11 +127,10 @@ const defaultData = {
   sort: 0,
   status: 1,
   hidden: 0,
-  component: 'Layout',
-  title: '',
-  icon: '',
-  isFrame: 0,
+  noComponent: false,
   type: 0,
+  icon: '',
+  name: '',
   alias: '',
   path: ''
 };
@@ -227,6 +223,7 @@ export default {
     },
     async onSubmit() {
       this.saveForm.pid = this.saveForm.pid || 0;
+      this.saveForm.noComponent = this.saveForm.type;
       console.log(this.saveForm);
       /* await post('/api/system/auth/resource/save', this.saveForm).then(res => {
         this.dialogVisible = false;

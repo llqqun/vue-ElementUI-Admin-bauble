@@ -5,7 +5,7 @@ const tableTemp =
     { prop: 'mobile', label: '联系方式', widthMin: 140 }
   ],
   'menus': [
-    { prop: 'title', label: '菜单名称', widthMin: 140, center: 'left' },
+    { prop: 'name', label: '菜单名称', widthMin: 140, center: 'left' },
     { prop: 'path', label: '菜单路径', widthMin: 140, center: 'left' },
     { prop: 'alias', label: '菜单权限', widthMin: 140, center: 'center' },
     { prop: 'icon', label: '菜单图标', widthMin: 140, center: 'center' },

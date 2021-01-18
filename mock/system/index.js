@@ -27,7 +27,7 @@ module.exports = [
       return {
         code: 200,
         data: {
-          list: menus,
+          list: adminRoutes,
           total: 90
         }
       };
