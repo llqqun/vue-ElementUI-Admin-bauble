@@ -49,8 +49,9 @@ export default {
 }
 
 .sidebar-logo-container {
+  float: left;
   position: relative;
-  width: 100%;
+  width: 210px;
   height: 50px;
   line-height: 50px;
   background: #bbe6d6;
@@ -81,6 +82,7 @@ export default {
   }
 
   &.collapse {
+    width: 50px;
     .sidebar-logo {
       margin-right: 0px;
     }

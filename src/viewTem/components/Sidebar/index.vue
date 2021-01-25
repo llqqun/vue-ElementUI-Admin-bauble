@@ -1,6 +1,6 @@
 <template>
   <div :class="{'has-logo':showLogo}">
-    <logo v-if="showLogo" :collapse="isCollapse" />
+   <!-- <logo v-if="showLogo" :collapse="isCollapse" />-->
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <template v-if="leftMenus.children && leftMenus.children.length">
         <el-menu
@@ -27,12 +27,11 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import Logo from './Logo';
 import SidebarItem from './SidebarItem';
 import variables from '@/styles/variables.scss';
 
 export default {
-  components: { SidebarItem, Logo },
+  components: { SidebarItem },
   computed: {
     ...mapGetters(['sidebar', 'leftMenus']),
     activeMenu() {

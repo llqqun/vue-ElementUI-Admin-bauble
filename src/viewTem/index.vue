@@ -1,17 +1,16 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+    <Navbar></Navbar>
     <div class="main-container">
+      <sidebar class="sidebar-container" />
       <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
         <tags-view v-if="needTagsView" />
+        <app-main />
       </div>
-      <app-main />
       <right-panel>
         <settings />
       </right-panel>
     </div>
-    <sidebar class="sidebar-container" />
   </div>
 </template>
 
@@ -29,7 +28,7 @@ export default {
     Sidebar,
     RightPanel,
     Settings,
-    TagsView
+    TagsView,
   },
   mixins: [ResizeMixin],
   computed: {
@@ -81,16 +80,11 @@ export default {
 }
 
 .fixed-header {
-  position: fixed;
+  position: relative;
   top: 0;
-  right: 0;
-  z-index: 9;
-  width: calc(100% - #{$sideBarWidth});
+  padding-top: 34px;
+  width: 100%;
   transition: width 0.28s;
-}
-
-.hideSidebar .fixed-header {
-  width: calc(100% - 54px);
 }
 
 .mobile .fixed-header {
@@ -99,4 +93,7 @@ export default {
 .sidebar-container {
   box-shadow: 5px 0px 15px 5px rgba(0, 0, 0, 0.3);
 }
+  .navbar-title {
+    height: 50px;
+  }
 </style>

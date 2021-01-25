@@ -23,7 +23,7 @@ function transitionRouter(menus) {
 function filterTreeMenus(routes = [], rolesMenu, path) {
   let res = [];
   rolesMenu.forEach(node => {
-    if (node.path === 'components') debugger;
+    // if (node.path === 'components') debugger;
     if (node.noComponent) {
       res = res.concat(filterTreeMenus(routes, node.children, node.path));
     } else {
