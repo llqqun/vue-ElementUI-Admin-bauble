@@ -11,7 +11,7 @@ module.exports = [
     type: 'get',
     response: _ => {
       return {
-        code: 200,
+        code: 0,
         data: {
           code: '111',
           image: ''
@@ -25,7 +25,7 @@ module.exports = [
     type: 'get',
     response: config => {
       return {
-        code: 200,
+        code: 0,
         data: {
           list: adminRoutes,
           total: 90
@@ -38,7 +38,7 @@ module.exports = [
     type: 'get',
     response: _ => {
       return {
-        code: 200,
+        code: 0,
         data: {
           list: roles,
           total: 90
@@ -51,7 +51,7 @@ module.exports = [
     type: 'get',
     response: _ => {
       return {
-        code: 200,
+        code: 0,
         data: { menus: menus }
       };
     }
@@ -63,12 +63,12 @@ module.exports = [
       const { data } = config.query;
       if (data.indexOf('demo') !== -1) {
         return {
-          code: 200,
+          code: 0,
           data: { menus: demoRoutes, btn: btn }
         };
       }
       return {
-        code: 200,
+        code: 0,
         data: { menus: adminRoutes, btn: btn }
       };
     }
@@ -78,7 +78,7 @@ module.exports = [
     type: 'get',
     response: _ => {
       return {
-        code: 200,
+        code: 0,
         data: { records: adminList, total: 2 }
       };
     }
@@ -88,7 +88,7 @@ module.exports = [
     type: 'get',
     response: _ => {
       return {
-        code: 200,
+        code: 0,
         data: menus
       };
     }

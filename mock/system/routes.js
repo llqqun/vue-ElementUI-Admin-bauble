@@ -117,6 +117,16 @@ const adminRoutes = [
   },
   {
     'alias': '',
+    'hasChild': true,
+    'hidden': 0,
+    'icon': 'table',
+    'id': 292,
+    'name': '功能模块',
+    'noComponent': false,
+    'path': '/professionalWork',
+    'pid': 0,
+    'sort': 0,
+    'status': 1,
     'children': [
       {
         'alias': '',
@@ -167,24 +177,24 @@ const adminRoutes = [
         'type': 0,
         children: [
           {
+            'id': 2941,
+            'pid': 294,
             path: 'vueCropper',
             name: '图片裁剪',
+            'icon': 'example',
+            'noComponent': false
+          },
+          {
+            'id': 2942,
+            'pid': 294,
+            path: 'tinymce',
+            name: '富文本编辑器',
             'icon': 'example',
             'noComponent': false
           }
         ]
       }
     ],
-    'hasChild': true,
-    'hidden': 0,
-    'icon': 'table',
-    'id': 292,
-    'name': '功能模块',
-    'noComponent': false,
-    'path': '/professionalWork',
-    'pid': 0,
-    'sort': 0,
-    'status': 1,
     'type': 1
   }
 ];

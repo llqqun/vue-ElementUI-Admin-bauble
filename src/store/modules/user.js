@@ -31,12 +31,11 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo;
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response;
-        commit('SET_TOKEN', data);
-        setToken(data);
+      login(userInfo).then(response => {
+        const { data: { token }} = response;
+        commit('SET_TOKEN', token);
+        setToken(token);
         resolve();
       }).catch(error => {
         reject(error);
@@ -47,7 +46,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      if (state.token === 'admin') {
+      if (state.token.indexOf('admin')) {
         commit('SET_USERINFO', {
           id: 99999,
           name: 'admin',

@@ -30,8 +30,8 @@ module.exports = [
       }
 
       return {
-        code: 200,
-        data: tokens[username]
+        code: 0,
+        data: { token: tokens[username] }
       };
     }
   },
@@ -50,13 +50,13 @@ module.exports = [
       }
       if (token.indexOf('demo') !== -1) {
         return {
-          code: 200,
+          code: 0,
           data: data.users[1]
         };
       }
       data.users[0]['token'] = token;
       return {
-        code: 200,
+        code: 0,
         data: data.users[0]
       };
     }
@@ -68,7 +68,7 @@ module.exports = [
     type: 'post',
     response: _ => {
       return {
-        code: 200,
+        code: 0,
         data: '退出成功'
       };
     }

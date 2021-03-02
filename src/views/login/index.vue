@@ -68,7 +68,7 @@
 </template>
 
 <script>
-  const Mock = require('mockjs');
+const Mock = require('mockjs');
 import { getYZM } from '@/api/global';
 export default {
   name: 'Login',
@@ -144,7 +144,7 @@ export default {
     getYzm() {
       getYZM().then(res => {
         this.yzmUrl = Mock.Random.dataImage('60x40', Mock.mock({ 'regexp': /\w{4}/ }).regexp);
-        this.loginForm.captcha = process.env.NODE_ENV === 'development' ? res.data.code : '';
+        // this.loginForm.captcha = process.env.NODE_ENV === 'development' ? res.data.code : '';
       });
     }
   }

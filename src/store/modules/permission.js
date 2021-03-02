@@ -1,6 +1,5 @@
 import { constantRoutes, asyncRoutes } from '@/router';
-import { mockMenu, mockRouter } from '@/api/global';
-import viewTem from '@/viewTem';
+import { mockRouter } from '@/api/global';
 import store from '@/store';
 
 /* 菜单生成路由 */
@@ -34,7 +33,7 @@ function filterTreeMenus(routes = [], rolesMenu, path) {
         }
         res.push(routeObj);
       } else {
-        console.log(node);
+        console.log('无组件:' + node.name);
       }
     }
   });
@@ -61,7 +60,7 @@ const mutations = {
     state.leftMenus = data || [];
   },
   SET_ROUTER: (state, data) => {
-    state.router = data;
+    state.router = constantRoutes.concat(data);
   },
   SET_MENUS: (state, data) => {
     state.menus = data;

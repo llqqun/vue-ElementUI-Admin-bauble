@@ -3,12 +3,7 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-import Layout from '@/viewTem';
-
-/**
- * noCompoent          为true时使得该属性路由下的子路由和本级路由平级
- *
- */
+import Layout from '@/layout';
 
 export const constantRoutes = [
   {
@@ -155,6 +150,22 @@ export const asyncRoutes = [
         meta: {
           title: '在线用户'
         }
+      },
+      {
+        path: 'dictionary',
+        name: 'Dictionary',
+        component: () => import('@/views/system/dictionary'),
+        meta: {
+          title: '数据字典'
+        }
+      },
+      {
+        path: 'configuration',
+        name: 'Configuration',
+        component: () => import('@/views/system/configuration'),
+        meta: {
+          title: '系统配置'
+        }
       }
     ]
   },
@@ -174,6 +185,15 @@ export const asyncRoutes = [
         component: () => import('@/views/professionalWork/components/vueCropper'),
         meta: {
           title: '图片裁剪',
+          icon: ''
+        }
+      },
+      {
+        path: 'tinymce',
+        name: 'TinymceDemo',
+        component: () => import('@/views/professionalWork/components/tinymceDemo'),
+        meta: {
+          title: '富文本',
           icon: ''
         }
       },
