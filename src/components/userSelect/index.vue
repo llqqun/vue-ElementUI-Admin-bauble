@@ -7,6 +7,8 @@
     no-options-text="没有数据"
     no-children-text="没有子数据"
     clear-value-text="取消"
+    :always-open="alwaysOpen"
+    :append-to-body="appendToBody"
     :disabled="disabled"
     :default-expand-level="expandLevel"
     :clearable="clearable"
@@ -32,6 +34,16 @@ export default {
     event: 'setModel'
   },
   props: {
+    // 将菜单追加到<body />。
+    appendToBody: {
+      type: Boolean,
+      default: false
+    },
+    // 是否始终打开下拉列表
+    alwaysOpen: {
+      type: Boolean,
+      default: false
+    },
     expandLevel: { // 默认展开级别
       type: Number,
       default: 1
@@ -109,22 +121,28 @@ export default {
       }
     },
     formatText(node) { // 格式化
-      let label;
-      // 是否过滤以及过滤条件
-      if (this.matchKeys !== '') {
-        if (this.filterFun(node)) return;
-      }
-      // 深度匹配对象字段
-      if (this.label.indexOf('.') !== -1) {
-        this.label.split('.').forEach(item => {
-          label = node[item] || label[item];
-        });
-      } else {
-        label = node[this.label];
+      try {
+        if (this.matchKeys !== '') {
+          if (node[this.matchKeys] === this.filterVal) {
+            return;
+          }
+          if (Object.keys(node).includes('children')) {
+            if (node.children.constructor === Array) {
+              const off = node.children.some(item => {
+                return item[this.matchKeys] !== this.filterVal;
+              });
+              if (!off) delete node.children;
+            } else {
+              delete node.children;
+            }
+          }
+        }
+      } catch (e) {
+        console.log(e);
       }
       return {
         id: node[this.valueId],
-        label: label,
+        label: node[this.label],
         children: node.children
       };
     },
@@ -167,6 +185,12 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.vue-treeselect {
+  &::v-deep {
+    .vue-treeselect__value-container {
+      line-height: 1.5;
+    }
+  }
+}
 </style>
