@@ -57,7 +57,7 @@ module.exports = [
     }
   },
   {
-    url: '/routes',
+    url: '/api/routes',
     type: 'get',
     response: config => {
       const { data } = config.query;

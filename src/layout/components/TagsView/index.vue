@@ -204,13 +204,11 @@ export default {
 
   .tags-view-container {
   height: 34px;
-  /*width: 100%;*/
-  width: calc(100% - #{$sideBarWidth});
+  width: 100%;
   background: #fff;
   position: fixed;
   top: 50px;
   z-index: 9;
-  /*border-bottom: 1px solid #d8dce5;*/
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
   .tags-view-wrapper {
     .tags-view-item {

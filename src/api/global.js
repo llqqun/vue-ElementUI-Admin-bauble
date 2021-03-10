@@ -15,7 +15,7 @@ export function mockMenu(data) {
 }
 export function mockRouter(data) {
   return request({
-    url: '/routes',
+    url: '/api/routes',
     method: 'get',
     params: { data }
   });

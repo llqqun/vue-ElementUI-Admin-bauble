@@ -22,16 +22,9 @@ module.exports = [
     type: 'post',
     response: config => {
       const { username } = config.body;
-      if (!tokens[username]) {
-        return {
-          code: 201,
-          message: '没有该用户!'
-        };
-      }
-
       return {
         code: 0,
-        data: { token: tokens[username] }
+        data: { token: tokens[username], user: { id: 0, name: 'admin', avatar: '#' }}
       };
     }
   },

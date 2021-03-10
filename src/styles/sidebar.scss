@@ -89,18 +89,11 @@
   }
 
   .openSidebar {
-    .tags-view-container {
-      width: calc(100% - 210px);
-    }
     .main-container {
       margin-left: 210px;
     }
   }
   .hideSidebar {
-    .tags-view-container {
-      width: calc(100% - 54px);
-    }
-
     .sidebar-container {
       width: 54px !important;
     }

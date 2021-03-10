@@ -1,5 +1,5 @@
 import { login, logout, getInfo } from '@/api/user';
-import { getToken, setToken, removeToken } from '@/utils/auth';
+import { getToken, setToken, removeToken, setUserID } from '@/utils/auth';
 import { resetRouter } from '@/router';
 import store from '../index';
 
@@ -20,7 +20,6 @@ const mutations = {
     state.token = token;
   },
   SET_AVATAR: (state, url) => {
-    console.log(url);
     state.userInfo.avatar = url || '';
   },
   SET_USERINFO: (state, data) => {
@@ -33,9 +32,11 @@ const actions = {
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
       login(userInfo).then(response => {
-        const { data: { token }} = response;
+        const { data: { token, user }} = response;
         commit('SET_TOKEN', token);
+        commit('SET_USER', user);
         setToken(token);
+        setUserID(user.id);
         resolve();
       }).catch(error => {
         reject(error);
