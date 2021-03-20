@@ -62,7 +62,6 @@ export const constantRoutes = [
     ]
   }
 ];
-/* 本地异步路由暂时无用 */
 export const asyncRoutes = [
   {
     path: '/system',
@@ -186,6 +185,14 @@ export const asyncRoutes = [
         meta: {
           title: '图片裁剪',
           icon: ''
+        }
+      },
+      {
+        path: 'scroll',
+        name: 'Scroll',
+        component: () => import('@/views/professionalWork/components/scroll'),
+        meta: {
+          title: '滚动条'
         }
       },
       {

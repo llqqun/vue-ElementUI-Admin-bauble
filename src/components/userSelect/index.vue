@@ -146,28 +146,6 @@ export default {
         children: node.children
       };
     },
-    filterFun(node) {
-      if (this.filterVal) {
-        if (node[this.matchKeys] === this.filterVal) {
-          return true;
-        }
-        if (Object.keys(node).includes('children')) {
-          if (node.children.constructor === Array && node.children.length > 0) {
-            const off = node.children.some(item => {
-              return !(item[this.matchKeys] === this.filterVal);
-            });
-            if (!off) delete node.children;
-          } else {
-            delete node.children;
-          }
-        }
-      } else {
-        return Object.keys(node).some(item => {
-          return item === this.matchKeys;
-        });
-      }
-      return false;
-    },
     selectVal(node) { // 选中时触发
       if (node[this.valueId] === this.modelValue) return;
       this.$emit('selectVal', node);

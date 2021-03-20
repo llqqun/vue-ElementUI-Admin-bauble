@@ -8,6 +8,7 @@ const vxe_table_option = {
   },
   table: {
     keepSource: false,
+    align: 'center',
     checkboxConfig: {
       trigger: 'default',
       highlight: true
@@ -16,7 +17,7 @@ const vxe_table_option = {
   modal: {
     minWidth: 500,
     minHeight: 300,
-    mask: false,
+    mask: true,
     duration: 3000,
     marginSize: 8,
     dblclickZoom: true,

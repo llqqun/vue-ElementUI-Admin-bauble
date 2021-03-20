@@ -1,4 +1,5 @@
 'use strict';
+const CompressionWebPlugin = require('compression-webpack-plugin');
 const path = require('path');
 const defaultSettings = require('./src/settings.js');
 
@@ -34,12 +35,26 @@ module.exports = {
       }
     }
   },
-  configureWebpack: {
-    name: name,
-    resolve: {
-      alias: {
-        '@': resolve('src')
+  configureWebpack: config => {
+    const obj = {
+      name: name,
+      resolve: {
+        alias: {
+          '@': resolve('src')
+        }
       }
+    };
+    if (process.env.NODE_ENV === 'production') {
+      obj.plugins = [
+        new CompressionWebPlugin({
+          test: /\.js$|\.html$|\.css/,
+          threshold: 10240,
+          deleteOriginalAssets: true
+        })
+      ];
+      return obj;
+    } else {
+      return obj;
     }
   },
   chainWebpack(config) {

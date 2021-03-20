@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import getters from './getters'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import getters from './getters';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const modulesFiles = require.context('./modules', false, /\.js$/);
 
@@ -17,6 +17,6 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 const store = new Vuex.Store({
   modules,
   getters
-})
+});
 
-export default store
+export default store;

@@ -211,3 +211,16 @@
     border-top: 1px solid #e1e1e1;
   }
 }
+
+// 弹窗自定义表单样式1
+.custom-dialog-form {
+  .el-form-item {
+    width: 100%;
+
+  }
+  .el-form-item-half {
+    display: inline-block;
+    width: 50%;
+    margin: 0 0 18px 0;
+  }
+}

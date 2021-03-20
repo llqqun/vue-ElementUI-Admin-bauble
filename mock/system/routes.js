@@ -177,7 +177,7 @@ const adminRoutes = [
         'type': 0,
         children: [
           {
-            'id': 2941,
+            'id': Math.round(Math.random() * 100000),
             'pid': 294,
             path: 'vueCropper',
             name: '图片裁剪',
@@ -185,7 +185,15 @@ const adminRoutes = [
             'noComponent': false
           },
           {
-            'id': 2942,
+            'id': Math.round(Math.random() * 100000),
+            'pid': 294,
+            path: 'scroll',
+            name: '滚动条',
+            'icon': 'example',
+            'noComponent': false
+          },
+          {
+            'id': Math.round(Math.random() * 100000),
             'pid': 294,
             path: 'tinymce',
             name: '富文本编辑器',

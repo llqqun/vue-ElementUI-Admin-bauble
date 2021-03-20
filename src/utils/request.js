@@ -69,7 +69,7 @@ service.interceptors.response.use(
           break;
         default:
           console.log(res);
-          return;
+          return false;
       }
       return Promise.reject(res);
     } else {
