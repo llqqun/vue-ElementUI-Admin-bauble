@@ -63,7 +63,6 @@ export default {
   },
   data() {
     return {
-      defaultVal: false,
       hasChange: false,
       hasInit: false,
       tinymceId: this.id,
@@ -86,13 +85,12 @@ export default {
     }
   },
   watch: {
-    /* 每次打开编辑器时初始化内容开关 || 手动填充内容开关*/
-    manual(val) {
-      this.defaultVal = !!val;
+    manual() {
+      this.$nextTick(() =>
+        window.tinymce.get(this.tinymceId).setContent(this.value || ''));
     },
     value(val) {
-      if (this.defaultVal || (!this.hasChange && this.hasInit)) {
-        this.defaultVal = false;
+      if (!this.hasChange && this.hasInit) {
         this.$nextTick(() =>
           window.tinymce.get(this.tinymceId).setContent(val || ''));
       }
