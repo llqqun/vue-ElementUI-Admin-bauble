@@ -1,22 +1,9 @@
 <template>
   <div class="app-container">
     <el-row class="filter-container">
-      <el-input
-        v-model="filterForm.name"
-        placeholder="搜索内容"
-        style="width: 200px;"
-        clearable
-        class="filter-item"
-      />
-      <el-button
-        size="small"
-        type="primary"
-        icon="el-icon-search"
-        @click="searchHandle"
-      >搜索</el-button>
-      <router-link :to="'/system/taskLog'">
-        <el-button type="primary" size="small" icon="el-icon-edit-outline">日志</el-button>
-      </router-link>
+      <el-input v-model="filterForm.name" placeholder="搜索内容" style="width: 200px;" clearable class="filter-item"/>
+      <el-button size="small" type="primary" icon="el-icon-search" @click="searchHandle">搜索</el-button>
+      <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="$router.push('/system/taskLog')">日志</el-button>
       <el-button type="primary" size="small" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <el-button type="danger" icon="el-icon-delete" @click="batchDelete">批量删除</el-button>
     </el-row>

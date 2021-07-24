@@ -1,19 +1,8 @@
 <template>
   <div class="app-container">
     <el-row class="filter-container">
-      <el-input
-        v-model="filterForm.jobName"
-        placeholder="搜索任务名称"
-        style="width: 200px;"
-        clearable
-        class="filter-item"
-      />
-      <el-button
-        size="small"
-        type="primary"
-        icon="el-icon-search"
-        @click="searchHandle"
-      >搜索</el-button>
+      <el-input v-model="filterForm.jobName" placeholder="搜索任务名称" style="width: 200px;" clearable class="filter-item"/>
+      <el-button size="small" type="primary" icon="el-icon-search" @click="searchHandle">搜索</el-button>
       <el-button type="danger" icon="el-icon-delete" @click="batchDelete">批量删除</el-button>
       <el-button type="danger" icon="el-icon-delete" @click="clearLog">清空日志</el-button>
     </el-row>

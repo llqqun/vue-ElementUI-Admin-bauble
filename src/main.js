@@ -13,21 +13,26 @@ import * as filters from './filters';
 import mixins from './mixins';
 import '@/icons'; // icon
 
-import './plugins/index';
+import './plugins/index'; // 第三方插件包引入
 import '@/permission'; // permission control
 import rolesPermission from '@/utils/permission';
 import userSelect from '@/components/userSelect';
-// vxeTable
-// import 'xe-utils';
-// import VXETable from 'vxe-table';
-// import 'vxe-table/lib/style.css';
-// import VXETablePluginElement from 'vxe-table-plugin-element'; // 兼容饿了么组件
-// import vxe_table_option from '@/utils/vxe-table'; // 全局vxeTable配置
-// VXETable.setup(vxe_table_option);
-// VXETable.use(VXETablePluginElement);
-// Vue.use(VXETable);
+
 Vue.prototype.RP = rolesPermission;
 
+// 自动化全局注册组件
+// 不会使用webpack不要乱改此处代码
+const pp = require.context('./components', true, /\.vue$/);
+pp.keys().forEach(fileName => {
+  const componentConfig = pp(fileName);
+  const name = fileName.split('/').splice(1, 1);
+  try {
+    Vue.component(name[0], componentConfig.default || componentConfig);
+  } catch (e) {
+    console.log(e);
+    console.log(name);
+  }
+});
 /*import { mockXHR } from '../mock';*/
 /*if (process.env.NODE_ENV === 'production') {
   mockXHR();
@@ -45,7 +50,7 @@ Vue.use(ElementUI, {
   zIndex: 3000
 });
 Vue.use(userSelect);
-Vue.component('user-Select', userSelect);
+// Vue.component('user-Select', userSelect);
 
 Vue.config.productionTip = false;
 

@@ -35,18 +35,14 @@ export default {
     ...mapGetters(['menus']),
     activeMenu() {
       let activePath = '';
-      let obj;
       const { path } = this.$route;
       const lastLength = path.indexOf('/', 1);
       activePath = path.substring(path.indexOf('/'), lastLength) || '/';
       if (activePath === '/redirect') {
         activePath = path.substring(lastLength, path.indexOf('/', lastLength + 1)) || '/';
       }
-      if (activePath === '/') {
+      if (activePath === '/' || activePath === '/404') {
         activePath = '/system';
-        obj = this.menus[0];
-      } else if (activePath === '/404') {
-        return '/system';
       }
       this.utilMenus(activePath);
       return activePath;
@@ -56,7 +52,6 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.menus)
   },
   methods: {
     setMenus(menu) {

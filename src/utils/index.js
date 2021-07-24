@@ -180,7 +180,7 @@ export function removeClass(ele, cls) {
 
 export function deepClone(source) {
   if (!source && typeof source !== 'object') {
-    throw new Error('复制错误', 'deepClone');
+    throw new Error('复制错误deepClone');
   }
   const targetObj = source.constructor === Array ? [] : {};
   Object.keys(source).forEach(keys => {

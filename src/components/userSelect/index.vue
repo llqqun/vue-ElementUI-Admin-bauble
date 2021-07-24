@@ -152,8 +152,10 @@ export default {
     },
     inputVal(val) { // 值改变时触发
       this.$emit('setModel', val);
-      if (val === undefined) {
-        this.$emit('selectVal', { [this.valueId]: null, [this.label]: null, children: null });
+      if (!val) {
+        this.$emit('change', { [this.valueId]: null, [this.label]: null, children: null });
+      } else {
+        this.$emit('change', val);
       }
     },
     delVal(node) {

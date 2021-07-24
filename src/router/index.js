@@ -165,6 +165,22 @@ export const asyncRoutes = [
         meta: {
           title: '系统配置'
         }
+      },
+      {
+        path: 'timeOut',
+        name: 'TimeOut',
+        component: () => import('@/views/system/timeOut'),
+        meta: {
+          title: '定时任务'
+        }
+      },
+      {
+        path: 'taskLog',
+        name: 'TaskLog',
+        component: () => import('@/views/system/taskLog'),
+        meta: {
+          title: '定时任务日志'
+        }
       }
     ]
   },
@@ -188,6 +204,16 @@ export const asyncRoutes = [
         }
       },
       {
+        path: 'echarts',
+        name: 'Echarts',
+        component: () => import('@/views/professionalWork/components/echarts/index'),
+        defaultShow: true,
+        meta: {
+          title: '图表',
+          icon: ''
+        }
+      },
+      {
         path: 'scroll',
         name: 'Scroll',
         component: () => import('@/views/professionalWork/components/scroll'),
@@ -201,6 +227,15 @@ export const asyncRoutes = [
         component: () => import('@/views/professionalWork/components/tinymceDemo'),
         meta: {
           title: '富文本',
+          icon: ''
+        }
+      },
+      {
+        path: 'upimage',
+        name: 'Upimage',
+        component: () => import('@/views/professionalWork/components/upimage'),
+        meta: {
+          title: '图片上传',
           icon: ''
         }
       },

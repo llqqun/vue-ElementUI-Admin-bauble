@@ -88,6 +88,8 @@ const actions = {
         commit('SET_MENUS', data.menus);
         commit('SET_BTN', data.btn);
         const rou = transitionRouter(newRouter);
+        console.log(rou);
+
         rou.push({ path: '*', redirect: '/404', hidden: true });
         commit('SET_ROUTER', rou);
         resolve(rou);

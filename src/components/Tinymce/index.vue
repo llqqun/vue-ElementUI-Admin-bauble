@@ -307,6 +307,7 @@ export default {
 </script>
 
 <style lang="scss">
+// 防止在弹出层部分插件功能受到影响
   .tox.tox-silver-sink.tox-tinymce-aux {
     z-index: 10000 !important;
   }
@@ -315,9 +316,6 @@ export default {
   .tinymce-container {
     position: relative;
     line-height: normal;
-  }
-
-  .tinymce-container {
     ::v-deep {
       .mce-fullscreen {
         z-index: 10000;

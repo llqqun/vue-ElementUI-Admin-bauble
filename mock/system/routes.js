@@ -199,6 +199,14 @@ const adminRoutes = [
             name: '富文本编辑器',
             'icon': 'example',
             'noComponent': false
+          },
+          {
+            'id': Math.round(Math.random() * 100000),
+            'pid': 294,
+            path: 'upimage',
+            name: '图片上传',
+            'icon': 'example',
+            'noComponent': false
           }
         ]
       }

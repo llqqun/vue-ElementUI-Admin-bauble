@@ -1,6 +1,6 @@
 <template>
   <div>
-    1
+    <svg-icon icon-class="admin" style="font-size: 36px;"></svg-icon>
   </div>
 </template>
 <script>
