@@ -49,7 +49,7 @@ module.exports = {
         new CompressionWebPlugin({
           test: /\.js$|\.html$|\.css/,
           threshold: 10240,
-          deleteOriginalAssets: true
+          deleteOriginalAssets: false
         })
       ];
       return obj;
