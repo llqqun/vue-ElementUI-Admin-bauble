@@ -33,8 +33,11 @@ pp.keys().forEach(fileName => {
     console.log(name);
   }
 });
-/*import { mockXHR } from '../mock';*/
-/*if (process.env.NODE_ENV === 'production') {
+/**
+ * import { mockXHR } from '../mock';
+ * */
+/**
+ * if (process.env.NODE_ENV === 'production') {
   mockXHR();
 }*/
 // 全局过滤器

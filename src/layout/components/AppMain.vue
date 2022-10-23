@@ -1,7 +1,11 @@
 <template>
   <section class="app-main">
     <!-- 添加滚动条插件,高度设置为屏幕高度减去右侧顶部功能栏高度 -->
-    <el-scrollbar :noresize="true" wrap-class="app-main-scrollbar-wrapper" style="height:calc(100vh - 84px);">
+    <el-scrollbar
+      :noresize="true"
+      wrap-class="app-main-scrollbar-wrapper"
+      style="height:calc(100vh - 84px);"
+    >
       <div class="main-outer-space">
         <transition name="fade-transform" mode="out-in">
           <keep-alive :include="cachedViews">
@@ -18,13 +22,13 @@ export default {
   name: 'AppMain',
   computed: {
     cachedViews() {
-      return this.$store.state.tagsView.cachedViews;
+      return this.$store.state.tagsView.cachedViews
     },
     key() {
-      return this.$route.path;
-    }
-  }
-};
+      return this.$route.path
+    },
+  },
+}
 </script>
 
 <style scoped>
@@ -35,7 +39,7 @@ export default {
   position: relative;
   overflow: hidden;
 }
-.fixed-header+.app-main {
+.fixed-header + .app-main {
   padding-top: 84px;
 }
 </style>
@@ -47,12 +51,12 @@ export default {
     padding-right: 15px;
   }
 }
-  .app-main-scrollbar-wrapper {
-    overflow-x: hidden;
-    background-color: #f3f1f1;
-  }
+.app-main-scrollbar-wrapper {
+  overflow-x: hidden;
+  background-color: #f3f1f1;
+}
 .main-outer-space {
   padding: 10px;
-  min-height: 100%;
+  height: 100%;
 }
 </style>
